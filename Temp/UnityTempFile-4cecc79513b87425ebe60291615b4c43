@@ -1,0 +1,204 @@
+-debug
+-target:library
+-nowarn:0169
+-out:'Temp/Assembly-CSharp.dll'
+-r:'/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll'
+-r:'Assets/Plugins/System.Data.dll'
+-r:'Assets/Plugins/System.Drawing.dll'
+-r:'Assets/Plugins/System.Windows.Forms.dll'
+-r:'/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll'
+-r:'/Applications/Unity/Unity.app/Contents/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll'
+-define:UNITY_5_2_2
+-define:UNITY_5_2
+-define:UNITY_5
+-define:ENABLE_NEW_BUGREPORTER
+-define:ENABLE_2D_PHYSICS
+-define:ENABLE_4_6_FEATURES
+-define:ENABLE_AUDIO
+-define:ENABLE_CACHING
+-define:ENABLE_CLOTH
+-define:ENABLE_DUCK_TYPING
+-define:ENABLE_FRAME_DEBUGGER
+-define:ENABLE_GENERICS
+-define:ENABLE_HOME_SCREEN
+-define:ENABLE_IMAGEEFFECTS
+-define:ENABLE_LIGHT_PROBES_LEGACY
+-define:ENABLE_MICROPHONE
+-define:ENABLE_MULTIPLE_DISPLAYS
+-define:ENABLE_PHYSICS
+-define:ENABLE_PLUGIN_INSPECTOR
+-define:ENABLE_SHADOWS
+-define:ENABLE_SINGLE_INSTANCE_BUILD_SETTING
+-define:ENABLE_SPRITES
+-define:ENABLE_TERRAIN
+-define:ENABLE_RAKNET
+-define:ENABLE_UNET
+-define:ENABLE_UNITYEVENTS
+-define:ENABLE_VR
+-define:ENABLE_WEBCAM
+-define:ENABLE_WWW
+-define:ENABLE_CLOUD_SERVICES
+-define:ENABLE_CLOUD_SERVICES_ADS
+-define:ENABLE_CLOUD_HUB
+-define:ENABLE_CLOUD_PROJECT_ID
+-define:ENABLE_CLOUD_SERVICES_ANALYTICS
+-define:ENABLE_CLOUD_SERVICES_UNET
+-define:ENABLE_CLOUD_SERVICES_BUILD
+-define:ENABLE_CLOUD_LICENSE
+-define:ENABLE_EDITOR_METRICS
+-define:ENABLE_REFLECTION_BUFFERS
+-define:INCLUDE_DYNAMIC_GI
+-define:INCLUDE_GI
+-define:INCLUDE_IL2CPP
+-define:INCLUDE_DIRECTX12
+-define:PLATFORM_SUPPORTS_MONO
+-define:RENDER_SOFTWARE_CURSOR
+-define:ENABLE_LOCALIZATION
+-define:ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION
+-define:UNITY_STANDALONE_OSX
+-define:UNITY_STANDALONE
+-define:ENABLE_SUBSTANCE
+-define:ENABLE_GAMECENTER
+-define:ENABLE_TEXTUREID_MAP
+-define:ENABLE_RUNTIME_GI
+-define:ENABLE_MOVIES
+-define:ENABLE_NETWORK
+-define:ENABLE_CRUNCH_TEXTURE_COMPRESSION
+-define:ENABLE_LOG_MIXED_STACKTRACE
+-define:ENABLE_UNITYWEBREQUEST
+-define:ENABLE_WEBSOCKET_HOST
+-define:ENABLE_MONO
+-define:ENABLE_PROFILER
+-define:DEBUG
+-define:TRACE
+-define:UNITY_ASSERTIONS
+-define:UNITY_EDITOR
+-define:UNITY_EDITOR_64
+-define:UNITY_EDITOR_OSX
+'Assets/GuitarListener.cs'
+'Assets/MidiChannelSeeker.cs'
+'Assets/MidiJack/Midi.cs'
+'Assets/MidiJack/MidiDriver.cs'
+'Assets/MidiJack/MidiMaster.cs'
+'Assets/MidiJack/MidiStateUpdater.cs'
+'Assets/MidiListener.cs'
+'Assets/PowerChordsFinder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Properties/AssemblyInfo.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Deque.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Generic/Deque/GenericDeque.Enumerator.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Generic/Deque/GenericDeque.Node.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Generic/Deque/GenericDeque.Synchronized.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Generic/Deque/GenericDeque.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Generic/UndoableList/ICommand.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Generic/UndoableList/UndoManager.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Generic/UndoableList/UndoableList.Commands.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Generic/UndoableList/UndoableList.Test.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Generic/UndoableList/UndoableList.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/AVL Tree Classes/AvlEnumerator.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/AVL Tree Classes/AvlNode.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/AVL Tree Classes/IAvlNode.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/AVL Tree Classes/NullAvlNode.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/Array.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/ArrayList.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/RAL Helper Classes/RalEnumerator.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/RAL Helper Classes/RalTopNode.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/RAL Helper Classes/RalTreeNode.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/RandomAccessList.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/SortedList.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/Immutable/Stack.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/PriorityQueue.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Collections/SkipList.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Clocks/IClock.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Clocks/MidiInternalClock.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Clocks/PpqnClock.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/InputDevice Class/InputDevice.Construction.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/InputDevice Class/InputDevice.Events.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/InputDevice Class/InputDevice.Fields.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/InputDevice Class/InputDevice.Messaging.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/InputDevice Class/InputDevice.Properties.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/InputDevice Class/InputDevice.PublicMethods.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/InputDevice Class/InputDevice.Win32.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/InputDevice Class/InputDevice.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/InputDevice Class/MidiInCaps.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/MidiDevice.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/MidiDeviceException.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/MidiHeader.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/MidiHeaderBuilder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/OutputDevice Classes/MidiOutCaps.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/OutputDevice Classes/NoOpEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/OutputDevice Classes/OutputDevice.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/OutputDevice Classes/OutputDeviceBase.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Device Classes/OutputDevice Classes/OutputStream.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/GeneralMidi.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/ChannelMessage.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/EventArgs/ChannelMessageEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/EventArgs/InvalidShortMessageEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/EventArgs/InvalidSysExMessageEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/EventArgs/MetaMessageEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/EventArgs/RawMessageEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/EventArgs/SysCommonMessageEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/EventArgs/SysExMessageEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/EventArgs/SysRealtimeMessageEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/IMidiMessage.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/Message Builders/ChannelMessageBuilder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/Message Builders/IMessageBuilder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/Message Builders/KeySignatureBuilder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/Message Builders/MetaTextBuilder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/Message Builders/SongPositionPointerBuilder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/Message Builders/SysCommonMessageBuilder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/Message Builders/TempoChangeBuilder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/Message Builders/TimeSignatureBuilder.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/MessageDispatcher.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/MetaMessage.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/ShortMessage.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/SysCommonMessage.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/SysExMessage.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Messages/SysRealtimeMessage.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/MidiNoteConverter.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Processing/ChannelChaser.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Processing/ChannelStopper.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Processing/ChasedEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Processing/StoppedEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/MidiEvent.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/MidiFileProperties.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/RecordingSession.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/Sequence.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/Sequencer.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/Track Classes/Track.Iterators.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/Track Classes/Track.Test.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/Track Classes/Track.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/Track Classes/TrackReader.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/Sequencing/Track Classes/TrackWriter.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/DeviceDialog.Designer.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/DeviceDialog.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/InputDeviceDialog.Designer.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/InputDeviceDialog.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/OutputDeviceDialog.Designer.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/OutputDeviceDialog.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/PianoControl.PianoKey.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/PianoControl.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/PianoControlDialog.Designer.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/PianoControlDialog.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/PianoKeyEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Timers/ITimer.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Timers/ThreadTimer.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Timers/ThreadTimerQueue.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Timers/Time.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Timers/Timer.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Timers/TimerFactory.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia/Device.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia/DeviceException.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia/ErrorEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia/Key.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia/Note.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Threading/AsyncResult.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Threading/DelegateQueue/DelegateQueue.AsyncResult.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Threading/DelegateQueue/DelegateQueue.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Threading/DelegateQueue/PostCompletedEventArgs.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Threading/DelegateScheduler/DelegateScheduler.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Threading/DelegateScheduler/Task.cs'
+'Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Threading/InvokeCompletedEventArgs.cs'
+-r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/2.0/System.Runtime.Serialization.dll'
+-r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/2.0/System.Xml.Linq.dll'

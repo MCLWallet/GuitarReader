@@ -1,10 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GuitarListener.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/DeviceDialog.cs">
     <Files>
-      <File FileName="Assets/GuitarListener.cs" Line="2" Column="26" />
-      <File FileName="Assets/MidiChannelSeeker.cs" Line="1" Column="1" />
-      <File FileName="Assets/MidiListener.cs" Line="1" Column="1" />
+      <File FileName="Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/DeviceDialog.cs" Line="40" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
