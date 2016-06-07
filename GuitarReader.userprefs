@@ -1,8 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/DeviceDialog.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PowerChordsFinder.cs">
     <Files>
-      <File FileName="Assets/Sanford.Multimedia.Midi-master/Source/Sanford.Multimedia.Midi/UI/DeviceDialog.cs" Line="40" Column="1" />
+      <File FileName="Assets/PowerChordsFinder.cs" Line="10" Column="44" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

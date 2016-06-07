@@ -2,31 +2,25 @@ using UnityEngine;
 using System.Collections;
 
 using MidiJack;
-using Sanford.Multimedia.Midi;
+using NAudio.Midi;
 
 public class PowerChordsFinder : MonoBehaviour
 {
-	/*
-	InputDevice inDevice = new InputDevice(0);
-	ChannelStopper stopper = new ChannelStopper();
-	*/
-
-
+	MidiIn midiIn;
+	bool monitoring;
+	int midiInDevice;
+	string[] devices;
 
 	// Use this for initialization
 	void Start ()
 	{
-		//Debug.Log(inDevice.DeviceID);
-		OutputDevice output = new OutputDevice(0);
-		ChannelMessage message = new ChannelMessage(ChannelCommand.NoteOn, 0, 60, 100);
+		devices = new string[MidiIn.NumberOfDevices];
 
-		output.Send (message);
+		for (int i = 0; i < MidiIn.NumberOfDevices; i++){
+			devices[i] = MidiIn.DeviceInfo(i).ProductName;
+		}
 
-		System.Threading.Thread.Sleep(100);
-
-		message = new ChannelMessage(ChannelCommand.NoteOff, 0, 60, 100);
-		output.Send(message);
-
+		Debug.Log (devices);
 	}
 
 	// Update is called once per frame
