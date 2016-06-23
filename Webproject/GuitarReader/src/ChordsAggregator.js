@@ -35,19 +35,27 @@ function getPowerChords(i){
             }
             else element = {"key":"undefined", "time":lastReceived};
             break;
-        case 3:
-            element = {"key":"undefined", "time":lastReceived};
-            break;
-        case 2:
-            element = {"key":"undefined", "time":lastReceived};
-            break;
-        case 1:
-            element = {"key":"undefined", "time":lastReceived};
-            break;
         default:
             element = {"key":"undefined", "time":lastReceived};
             break;
     }
-    if (element==null) console.log("null- i: ", i);
+    if (element==null) {
+        element = {"key":"undefined", "time":lastReceived};
+
+
+    }
     return element;
+}
+
+function getBarreChords(){
+    var lastReceived = notes[i]["receivedTime"];
+    var deltaTime = lastReceived-notes[i-1]["receivedTime"];
+    var firstNote = notes[i-1]["note"]["number"];
+    var secondNote = notes[i]["note"]["number"];
+
+    var element;
+
+
+
+
 }

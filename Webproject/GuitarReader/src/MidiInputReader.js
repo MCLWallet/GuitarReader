@@ -92,18 +92,29 @@ function recordSession(){
             input.addListener("noteon", "all", function(e){
                 //console.log(e);
                 notes[notesCount] = e;
-
                 /*
-                if (notesCount!=0){
-                    //console.log("delta time", notes[notesCount]["receivedTime"]-notes[notesCount-1]["receivedTime"]);
-                    if ((notes[notesCount]["channel"]==6 && notes[notesCount-1]["channel"]==5)
-                        || (notes[notesCount]["channel"]==5 && notes[notesCount-1]["channel"]==6))
-                    console.log("Chord found",notes[notesCount]["receivedTime"]-notes[notesCount-1]["receivedTime"]<=15);
+                var lastReceived = notes[notesCount]["receivedTime"];
+                var deltaTime = lastReceived-notes[notesCount-1]["receivedTime"];
+                var firstNote = notes[notesCount-1]["note"]["number"];
+                var secondNote = notes[notesCount]["note"]["number"];
 
-                    //console.log("Chord found");
+                if (notesCount>=10){
+                    var barreAble = [];
+                    switch(notes[notesCount]["channel"]){
+                        case 6:
+                            for (var l = notesCount; l>0 && l>(notesCount-10); l--){
+                                switch (notes[l]["channel"]){
+                                    case 6:
+                                        break;
+                                    case 5:
+                                        if (notes[l]["channel"]){
+
+                                        }
+                                }
+                            }
+                    }
                 }
                 */
-
                 notesCount++;
             });
         });
@@ -161,9 +172,12 @@ function saveSession(){
                     data[i][1] = "N/A";
                     break;
             }
+
+            //data[i][1] = notes[i]["channel"];
             data[i][2] = notes[i]["note"]["number"];                        // MIDI-note number
             data[i][3] = (notes[i]["receivedTime"] - firstTime)/1000;      // Received Time (in sec)
             data[i][4] = notes[i]["velocity"];                              // Velocity
+
         }
         str = arrayToCSVString(csvHeader, data, sep);                        // converts "data" into the CSV-compatible string "str"
         stats_E = createStats(data, "E");
@@ -227,12 +241,11 @@ function saveSession(){
 }
 
 function aggregateChords(){
-    console.log("asasdas");
-
     var temp = [];
 
-    for (var i = 1; i<data.length; i++){
+    for (var i = 1; i<notes.length; i++){
         temp.push(getPowerChords(i));
+        //temp.push(getBarreChords(i));
     }
     return temp;
 }
@@ -327,13 +340,13 @@ function getIndexOfTime(arr, t){
 
 
 /**
- * TODO: Power-Chords Array
  * TODO: Barre-Chords Array
  * TODO: Funk-Chords Array
  * TODO: Open-Chords Array
  *
  *
- * TODO: d3 visualizations (timeline, heatmap)
+ *
+ * TODO: find undefined PowerChords Bug
  *
  */
 
