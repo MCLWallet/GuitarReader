@@ -1,11 +1,7 @@
-/**
- * Created by MCL on 16.06.16.
- */
 
 /*
    Algorithm modified
  http://bl.ocks.org/tjdecke/5558084
-
 
  */
 function heatmapVis(){
@@ -30,7 +26,9 @@ function heatmapVis(){
         .attr("id", "heatmap"+numVis)
         .attr("width", width)
         .attr("height", height)
-        .attr("transform", "translate(0,"+(margins.left-margins.top)+")");
+        .attr("transform", "translate(0,"+(margins.left-margins.top)+")")
+        .attr("class", "fadeIn");
+
 
     var stringLabels = svg.selectAll(".stringLabel")
         .data(strings).enter()

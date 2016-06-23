@@ -1,6 +1,3 @@
-/**
- * Created by MCL on 10.06.16.
- */
 /*
 var midi, data, cmd;
 var channel, type, note, velocity;
@@ -49,6 +46,7 @@ function onMIDIMessage(message){
 
 var notes;                                                      // Array with all notes information
 var data;                                                       // Array with filtered notes information
+var chords;                                                     // Array with chords information
 var notesCount = 0;                                             // counter for notes-array positions
 
 var stats,
@@ -92,8 +90,20 @@ function recordSession(){
             if (err) console.log("WebMidi could not be enabled");
             var input = WebMidi.inputs[0];
             input.addListener("noteon", "all", function(e){
-                console.log(e);
+                //console.log(e);
                 notes[notesCount] = e;
+
+                /*
+                if (notesCount!=0){
+                    //console.log("delta time", notes[notesCount]["receivedTime"]-notes[notesCount-1]["receivedTime"]);
+                    if ((notes[notesCount]["channel"]==6 && notes[notesCount-1]["channel"]==5)
+                        || (notes[notesCount]["channel"]==5 && notes[notesCount-1]["channel"]==6))
+                    console.log("Chord found",notes[notesCount]["receivedTime"]-notes[notesCount-1]["receivedTime"]<=15);
+
+                    //console.log("Chord found");
+                }
+                */
+
                 notesCount++;
             });
         });
@@ -187,6 +197,26 @@ function saveSession(){
             }
 
         }
+
+        chords = aggregateChords();
+        console.log("chords", chords);
+
+        //console.log("notes", notes);
+
+        var pcCount = 0,
+            otherCount = 0,
+            undefinedCount = 0;
+        for (var k = 0; k<chords.length;k++){
+            if (chords[k]["key"]=="PC") pcCount++;
+            if (chords[k]["key"]=="other") otherCount++;
+            if (chords[k]["key"]=="undefined") undefinedCount++;
+        }
+        console.log("Power Chords", pcCount);
+        console.log("Other", otherCount);
+        console.log("Undefined", undefinedCount);
+
+
+
         sessionSaved = true;
         recording = false;
     }
@@ -195,6 +225,18 @@ function saveSession(){
     }
 
 }
+
+function aggregateChords(){
+    console.log("asasdas");
+
+    var temp = [];
+
+    for (var i = 1; i<data.length; i++){
+        temp.push(getPowerChords(i));
+    }
+    return temp;
+}
+
 
 function downloadSession(){
     if (sessionSaved){

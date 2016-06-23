@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="styles.css">
+
 <head>
     <meta charset="UTF-8">
     <title>GuitarReader</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/animations.css">
     <script src="lib/webmidi.min.js"></script>
     <script src="lib/FileSaver.min.js"></script>
     <script src="lib/d3.min.js"></script>
     <script src="lib/jquery-3.0.0.min.js"></script>
 </head>
 <body>
-    <div id="title" class="pulse">
+    <div id="title" class="slideDown">
         <h1><b>GuitarReader.</b></h1>
     </div>
     <p><b></b></p>
@@ -50,10 +52,12 @@
     <br>
     <br>
 
+    <script src="src/ChordsAggregator.js"></script>
     <script src="src/MidiInputReader.js"></script>
     <script src="src/LineGraphVis.js"></script>
     <script src="src/HeatmapVis.js"></script>
     <script src="src/ClickButtonHandling.js"></script>
+    <script src="src/StreamGraphVis.js"></script>
 
 
 </body>

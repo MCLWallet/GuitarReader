@@ -1,6 +1,3 @@
-/**
- * Created by MCL on 12.06.16.
- */
 
 var numVis = 1;                                             // amount of requested visualizations
 var visRequested = false;
@@ -43,7 +40,8 @@ function visLineGraph(){
         .attr("id", "line"+numVis)
         .attr("width", width)
         .attr("height", height+50)
-        .attr("transform", "translate(0,"+(height-margins.bottom)+")");
+        .attr("transform", "translate(0,"+(height-margins.bottom)+")")
+        .attr("class", "fadeIn");
 
     svg.append("g")
         .attr("id", "xAxis"+numVis)
@@ -80,7 +78,7 @@ function visLineGraph(){
         svg.append("path")
             .attr("id", stringNames[j])
             .attr("d", line(stats[j]))
-            .attr("stroke", colorLegend2[j])
+            .attr("stroke", colorLegend[j])
             .attr("stroke-width", 2)
             .attr("fill", "none");
     }
@@ -98,7 +96,7 @@ function visLineGraph(){
     for (var k = 0; k<6; k++){
         legend.append("circle")
             .attr("r", 8)
-            .attr("fill", colorLegend2[k])
+            .attr("fill", colorLegend[k])
             .attr("cx", 95)
             .attr("cy", pos);
         legend.append("text")
