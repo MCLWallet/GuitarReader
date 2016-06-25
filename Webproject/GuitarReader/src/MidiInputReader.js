@@ -11,6 +11,8 @@ var stats,
     stats_b,
     stats_e;
 
+var barreChords;
+
 var sessionSaved = false,
     recording = false;
 
@@ -154,26 +156,28 @@ function saveSession(){
 
         }
 
-        /*
-        chords = aggregateChords();
-        console.log("chords", chords);
 
-        console.log("data", data);
+        chords = aggregateChords();
+        console.log("Chords", chords);
 
         var pcCount = 0,
             otherCount = 0,
-            undefinedCount = 0;
+            undefinedCount = 0,
+            barreCount = 0,
+            singleCount = 0;
         for (var k = 0; k<chords.length;k++){
             if (chords[k]["key"]=="PC") pcCount++;
             if (chords[k]["key"]=="other") otherCount++;
             if (chords[k]["key"]=="undefined") undefinedCount++;
+            if (chords[k]["key"]=="BC") barreCount++;
+            if (chords[k]["key"]=="SN") singleCount++;
+
         }
         console.log("Power Chords", pcCount);
         console.log("Other", otherCount);
         console.log("Undefined", undefinedCount);
-           */
-        getBarreChords();
-
+        console.log("Barre Chords", barreCount);
+        console.log("Single Notes", singleCount);
 
 
         sessionSaved = true;
@@ -185,14 +189,7 @@ function saveSession(){
 
 }
 
-function aggregateChords(){
-    var temp = [];
 
-    for (var i = 1; i<notes.length; i++){
-        temp.push(getPowerChords(i));
-    }
-    return temp;
-}
 
 
 function downloadSession(){
