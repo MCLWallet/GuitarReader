@@ -121,11 +121,11 @@ function mousemove(stats) {
 
 function getMaxStrings(){
   var max = 0;
-  if (stats_E.length>max) max=stats_E.length;
-  if (stats_A.length>max) max=stats_A.length;
-  if (stats_d.length>max) max=stats_d.length;
-  if (stats_g.length>max) max=stats_g.length;
-  if (stats_b.length>max) max=stats_b.length;
-  if (stats_e.length>max) max=stats_e.length;
+  if (stats_E.length>=max) max=stats_E.length;
+  if (stats_A.length>=max) max=stats_A.length;
+  if (stats_d.length>=max) max=stats_d.length;
+  if (stats_g.length>=max) max=stats_g.length;
+  if (stats_b.length>=max) max=stats_b.length;
+  if (stats_e.length>=max) max=stats_e.length;
   return max;
 }

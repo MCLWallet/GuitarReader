@@ -78,7 +78,7 @@ function heatmapVis(){
 
     legend.append("rect")
         .attr("x", function(d, i) { return margins.left+margins.right+legendWidth * i; })
-        .attr("y", height-margins.bottom-margins.top)
+        .attr("y", 350)
         .attr("width", legendWidth)
         .attr("height", gridSize / 2)
         .style("fill", function(d, i) { return colorLegend[i]; });
@@ -86,8 +86,8 @@ function heatmapVis(){
     legend.append("text")
         .attr("class", "mono")
         .text(function(d) { return "≥ " + Math.round(d); })
-        .attr("x", function(d, i) { return legendWidth * i; })
-        .attr("y", height + gridSize);
+        .attr("x", function(d, i) { return legendWidth * i+margins.left+50; })
+        .attr("y", 350 + gridSize);
 
     legend.exit().remove();
 

@@ -1,54 +1,8 @@
-/*
-var midi, data, cmd;
-var channel, type, note, velocity;
-
-// Request MIDI Access
-if (navigator.requestMIDIAccess){
-    navigator.requestMIDIAccess({sysex:false}).then(onMIDISuccess, onMIDIFailure);
-}
-else{
-    alert("No MIDI support in your browser.");
-}
-
-
-function onMIDISuccess(midiAccess){
-    console.log("MIDI Access Object", midiAccess);
-
-    midi = midiAccess;
-    var inputs = midi.inputs.values();
-
-    for (var input = inputs.next(); input && !input.done; input = inputs.next()){
-        input.value.onmidimessage = onMIDIMessage;
-    }
-
-}
-
-function onMIDIFailure(e){
-    console.log("No access to MIDI devices"+e);
-}
-
-function onMIDIMessage(message){
-    data = message.data;
-    cmd = data[0] >> 4;
-    channel = data[0] & 0xf;
-    type = data[0] & 0xf0;
-    note = data[1];
-    velocity = data[2];
-    console.log("Note tracked")
-    console.log("Channel", channel);
-    console.log("Type", type);
-    console.log("Note", note);
-    console.log("Velocity", velocity);
-}
-
-
-*/
-
 var notes;                                                      // Array with all notes information
 var data;                                                       // Array with filtered notes information
 var chords;                                                     // Array with chords information
 var notesCount = 0;                                             // counter for notes-array positions
-
+var notesOffCount = 0;
 var stats,
     stats_E,
     stats_A,
@@ -90,33 +44,21 @@ function recordSession(){
             if (err) console.log("WebMidi could not be enabled");
             var input = WebMidi.inputs[0];
             input.addListener("noteon", "all", function(e){
-                //console.log(e);
+                //console.log("NoteOn "+notesCount+":",e);
                 notes[notesCount] = e;
+
                 /*
-                var lastReceived = notes[notesCount]["receivedTime"];
-                var deltaTime = lastReceived-notes[notesCount-1]["receivedTime"];
-                var firstNote = notes[notesCount-1]["note"]["number"];
-                var secondNote = notes[notesCount]["note"]["number"];
+                if (notesCount>=20 && notesCount%20==0){
+                    var barreNotes = [];
+                    var test = getBarreChords(1, notesCount, barreNotes);
+                    console.log("Recursion Array", test);
 
-                if (notesCount>=10){
-                    var barreAble = [];
-                    switch(notes[notesCount]["channel"]){
-                        case 6:
-                            for (var l = notesCount; l>0 && l>(notesCount-10); l--){
-                                switch (notes[l]["channel"]){
-                                    case 6:
-                                        break;
-                                    case 5:
-                                        if (notes[l]["channel"]){
-
-                                        }
-                                }
-                            }
-                    }
                 }
                 */
+
                 notesCount++;
             });
+
         });
         recording = true;
         sessionSaved = false;
@@ -212,10 +154,11 @@ function saveSession(){
 
         }
 
+        /*
         chords = aggregateChords();
         console.log("chords", chords);
 
-        //console.log("notes", notes);
+        console.log("data", data);
 
         var pcCount = 0,
             otherCount = 0,
@@ -228,6 +171,8 @@ function saveSession(){
         console.log("Power Chords", pcCount);
         console.log("Other", otherCount);
         console.log("Undefined", undefinedCount);
+           */
+        getBarreChords();
 
 
 
@@ -245,7 +190,6 @@ function aggregateChords(){
 
     for (var i = 1; i<notes.length; i++){
         temp.push(getPowerChords(i));
-        //temp.push(getBarreChords(i));
     }
     return temp;
 }
@@ -341,12 +285,10 @@ function getIndexOfTime(arr, t){
 
 /**
  * TODO: Barre-Chords Array
- * TODO: Funk-Chords Array
- * TODO: Open-Chords Array
- *
- *
+ * TODO: Funk-Chords Array (nice to have)
+ * TODO: Open-Chords Array (not essential for presentation)
  *
  * TODO: find undefined PowerChords Bug
  *
+ *
  */
-
