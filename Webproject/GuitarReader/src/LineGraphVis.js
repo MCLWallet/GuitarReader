@@ -5,8 +5,8 @@ var visRequested = false;
 
 // Starts the visualization (line graph)
 function visLineGraph(){
-    var width = 1024,
-        height = 512,
+    var width = 700,
+        height = 400,
         margins = {
             top: 20,
             right:20,
@@ -39,7 +39,7 @@ function visLineGraph(){
         .outerTickSize(0)
         .tickPadding(10);
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("body").select("#lineGraphElement").append("svg")
         .attr("id", "line"+numVis)
         .attr("width", width)
         .attr("height", height+50)
@@ -85,6 +85,7 @@ function visLineGraph(){
             .attr("stroke-width", 2)
             .attr("fill", "none");
     }
+
 
     var legend = svg.append("g");
 

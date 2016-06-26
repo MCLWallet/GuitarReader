@@ -22,7 +22,7 @@ function heatmapVis(){
     for (var f = 0; f<=22; f++) frets[f] = f;
 
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("body").select("#heatmapElement").append("svg")
         .attr("id", "heatmap"+numVis)
         .attr("width", width)
         .attr("height", height)

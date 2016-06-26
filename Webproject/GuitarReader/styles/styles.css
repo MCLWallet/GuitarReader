@@ -34,14 +34,17 @@ li a {
     text-decoration: none;
 }
 
-li a:hover:not(.active) {
-     background-color: #1D4C6E;
- }
 
-li a:hover{
-    background-color: #1D4C6E;
+li:hover{
+    background-color: #123045;
 }
 
+#recordLogo:hover{
+    background-color: #123045;
+}
+#stopLogo:hover{
+    background-color: #123045;
+}
 
 .active {
     background-color: #123045;
@@ -88,7 +91,28 @@ div.relative {
     cursor: pointer;
 }
 
+.wrap {
+    width: 2000px;
+}
 
+.left {
+    width: 705px;
+    height: 355px;
+    margin: 50px;
+    float: left;
+}
+.right {
+    width: 705px;
+    height: 355px;
+    float: right;
+}
+
+div.static {
+    position: static;
+}
+div.relative {
+    position: relative;
+}
 
 
 

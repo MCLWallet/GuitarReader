@@ -60,7 +60,7 @@ function streamGraphVis(){
         .y0(function(d) { return y(d.y0); })
         .y1(function(d) { return y(d.y0 + d.y); });
 
-    var svg = d3.select("body").append("div").attr("id", "stream").append("svg")
+    var svg = d3.select("body").select("#streamGraphElement").append("div").attr("id", "stream").append("svg")
         .attr("id", "streamGraphVis"+numVis)
         .attr("width", width+ margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -124,37 +124,6 @@ function streamGraphVis(){
                 .duration(250)
                 .attr("opacity", function(d, j) {
                     return j != i ? 0.6 : 1;
-                })})
-
-        .on("mousemove", function(d, i) {
-            mousex = d3.mouse(this);
-            mousex = mousex[0];
-            var invertedx = x.invert(mousex);
-            invertedx = invertedx.getMonth() + invertedx.getDate();
-            var selected = (d.values);
-            for (var k = 0; k < selected.length; k++) {
-                datearray[k] = selected[k].date;
-                datearray[k] = datearray[k].getMonth() + datearray[k].getDate();
-            }
-
-            mousedate = datearray.indexOf(invertedx);
-            pro = d.values[mousedate].value;
-
-            d3.select(this)
-                .classed("hover", true)
-                .attr("stroke", strokecolor)
-                .attr("stroke-width", "0.5px"),
-                tooltip.html( "<p>" + d.key + "<br>" + pro + "</p>" ).style("visibility", "visible");
-
-        })
-        .on("mouseout", function(d, i) {
-            svg.selectAll(".layer")
-                .transition()
-                .duration(250)
-                .attr("opacity", "1");
-            d3.select(this)
-                .classed("hover", false)
-                .attr("stroke-width", "0px"), tooltip.html( "<p>" + d.key + "<br>" + pro + "</p>" ).style("visibility", "hidden");
-        });
+                })});
 
 }
