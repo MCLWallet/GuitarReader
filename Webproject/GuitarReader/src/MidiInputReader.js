@@ -22,6 +22,7 @@ var str;
 
 var heatmapData;
 var streamGraphData;
+var barChartData;
 
 function recordSession(){
     notes = new Array();
@@ -42,6 +43,14 @@ function recordSession(){
             .attr("x", 35)
             .attr("y", 14)
             .text("Recording Session");
+
+        var recordButton = d3.select("#record")
+            .attr("style", "background-color: #d62728;");
+
+        var visButton = d3.select("#visBut")
+            .attr("style", "background-color: #1D4C6E;");
+
+
         // WebMidi saves the played notes into the array "notes"
         WebMidi.enable(function(err){
             if (err) console.log("WebMidi could not be enabled");
@@ -87,6 +96,11 @@ function saveSession(){
             .attr("y", 15)
             .text("Session saved");
 
+        var recordButton = d3.select("#record")
+            .attr("style", "background-color: #1D4C6E;");
+
+        var stopButton = d3.select("#stop")
+            .attr("style", "background-color: #123045;");
 
         // Preparing dataset for csv and line graph
         var firstTime = 0;
@@ -159,6 +173,7 @@ function saveSession(){
 
         chords = aggregateChords();
         streamGraphData = prepareStreamGraphData(chords);
+        barChartData = prepareBarChartData(chords);
         console.log("streamGraphData", streamGraphData);
 
 
@@ -208,6 +223,33 @@ function prepareStreamGraphData(arr){
         result.push({"key":"BC", "time":j, "value":barreCount});
         result.push({"key":"SN", "time":j, "value":singleCount});
     }
+
+    return result;
+}
+
+/**
+ *
+ * @param arr
+ */
+function prepareBarChartData(arr){
+    var result;
+
+    var pcCount = 0,
+        otherCount = 0,
+        barreCount = 0,
+        singleCount = 0;
+    for (var k = 0; k < arr.length; k++){
+        if (arr[k]["key"]=="PC") pcCount++;
+        if (arr[k]["key"]=="other") otherCount++;
+        if (arr[k]["key"]=="BC") barreCount++;
+        if (arr[k]["key"]=="SN") singleCount++;
+    }
+    result = [{"key":"PC", "value":pcCount},
+            {"key":"other", "value":otherCount},
+            {"key":"BC", "value":barreCount},
+            {"key":"SN", "value":singleCount}
+    ];
+
 
     return result;
 }

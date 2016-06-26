@@ -22,16 +22,16 @@
         </div>
     </a></li>
 
-    <li class="topbarElement" onclick="record()">
+    <li id="record"class="topbarElement" onclick="record()">
         Record
     </li>
-    <li class="topbarElement" onclick="save()">
+    <li id="stop" class="topbarElement" onclick="save()">
         Stop & Save Session
     </li>
     <li class="topbarElement" onclick="download()">
         Download CSV
     </li>
-    <li class="topbarElement" onclick="vis()">
+    <li id="visBut" class="topbarElement" onclick="vis()">
         Start Vis
     </li>
 </ul>
@@ -47,6 +47,7 @@
     <div id="lineGraphElement" class="left"></div>
     <div id="streamGraphElement" class="left"></div>
     <div id="heatmapElement" class="left"></div>
+    <div id="barChartElement" class="left"></div>
 
 </div>
 
@@ -56,6 +57,7 @@
 <script src="src/LineGraphVis.js"></script>
 <script src="src/HeatmapVis.js"></script>
 <script src="src/StreamGraphVis.js"></script>
+<script src="src/BarChartVis.js"></script>
 <script src="src/ClickButtonHandling.js"></script>
 
 

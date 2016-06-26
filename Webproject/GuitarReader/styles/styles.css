@@ -108,14 +108,14 @@ div.relative {
 
 
 .left {
-    width: 705px;
-    height: 355px;
+    width: auto;
+    height: auto;
     margin: 50px;
     float: left;
 }
 .right {
-    width: 705px;
-    height: 355px;
+    width: auto;
+    height: auto;
     float: right;
 }
 
@@ -126,6 +126,13 @@ div.relative {
     position: relative;
 }
 
+.bar {
+    fill: steelblue;
+}
+
+.bar:hover {
+    fill: brown;
+}
 
 
 

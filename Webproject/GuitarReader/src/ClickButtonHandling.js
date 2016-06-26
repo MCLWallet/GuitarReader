@@ -8,9 +8,15 @@ function download(){ downloadSession() };
 // Starts the visualization (line graph)
 function vis(){
     if(sessionSaved && !visRequested) {
+        var stopButton = d3.select("#stop")
+            .attr("style", "background-color: #1D4C6E;");
+        var visButton = d3.select("#visBut")
+            .attr("style", "background-color: #123045;");
+
         visLineGraph();
         heatmapVis();
         streamGraphVis();
+        barChartVis();
         visRequested = true;
 
     }
