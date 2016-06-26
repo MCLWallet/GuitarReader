@@ -1,7 +1,7 @@
 
 
 function streamGraphVis(){
-    var streamGraphColors = ["#045A8D", "#2B8CBE", "#74A9CF", "#A6BDDB", "#D0D1E6", "#F1EEF6"];
+    var streamGraphColors = ["#045A8D", "#2B8CBE", "#74A9CF", "#A6BDDB", "#D0D1E6"/*, "#F1EEF6"*/];
     var strokeColor = streamGraphColors[0];
     console.log("streamGraphData", streamGraphData);
 
@@ -13,7 +13,7 @@ function streamGraphVis(){
     var height = 400 - margin.top - margin.bottom;
 
     var ordinal = d3.scale.ordinal()
-        .domain(["Power Chords", "other", "undefined", "Barre Chords", "Single Notes"])
+        .domain(["Power Chords", "other"/*, "undefined"*/, "Barre Chords", "Single Notes"])
         .range(streamGraphColors);
 
     var tooltip = d3.select("body")
@@ -116,7 +116,7 @@ function streamGraphVis(){
     svg.select(".legendOrdinal")
         .call(legendOrdinal);
 
-
+    /*
     svg.selectAll(".layer")
         .attr("opacity", 1)
         .on("mouseover", function(d, i) {
@@ -125,5 +125,6 @@ function streamGraphVis(){
                 .attr("opacity", function(d, j) {
                     return j != i ? 0.6 : 1;
                 })});
+                */
 
 }

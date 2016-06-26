@@ -9,7 +9,7 @@ function visLineGraph(){
         height = 400,
         margins = {
             top: 20,
-            right:20,
+            right:60,
             bottom: 20,
             left: 54
         };
@@ -29,23 +29,21 @@ function visLineGraph(){
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom")
-        .innerTickSize(-height)
+        .innerTickSize(-height+margins.top+margins.bottom)
         .outerTickSize(0)
         .tickPadding(10);
     var yAxis = d3.svg.axis()
         .scale(yScale)
         .orient("left")
-        .innerTickSize(-width)
+        .innerTickSize(-width+margins.right+margins.left)
         .outerTickSize(0)
         .tickPadding(10);
 
     var svg = d3.select("body").select("#lineGraphElement").append("svg")
         .attr("id", "line"+numVis)
-        .attr("width", width)
+        .attr("width", width+margins.left+margins.right)
         .attr("height", height+50)
-        .attr("transform", "translate(0,"+(height-margins.bottom)+")")
-        .attr("class", "fadeIn");
-
+        .attr("transform", "translate(0,"+(height-margins.bottom)+")");
     svg.append("g")
         .attr("id", "xAxis"+numVis)
         .attr("class", "axis")
@@ -101,7 +99,7 @@ function visLineGraph(){
         .attr("transform", "translate(92,22)");
 
     var legendOrdinal = d3.legend.color()
-        .shape("path", d3.svg.symbol().type("triangle-up").size(150)())
+        .shape("path", d3.svg.symbol().type("triangle-up").size(60)())
         .shapePadding(10)
         .scale(ordinal);
 

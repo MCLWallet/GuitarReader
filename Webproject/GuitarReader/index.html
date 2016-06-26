@@ -23,34 +23,16 @@
     </a></li>
 
     <li class="topbarElement" onclick="record()">
-        <svg id="recordLogo" class="button" width="70" height="20">
-            <circle cx="0" cy="11" r="11" fill="#d62728"></circle>
-            <text x="24" y="18" font-size="17px" fill="white">Record</text>
-        </svg>
+        Record
     </li>
-    <li>
-        <svg id="stopLogo" class="button" width="180" height="20" onclick="save()">
-            <rect height="22" width="22" x="0" y="0"></rect>
-            <text x="30" y="17" font-size="16px" fill="white">Stop & Save Session</text>
-        </svg>
+    <li class="topbarElement" onclick="save()">
+        Stop & Save Session
     </li>
-    <li>
-        <div id="download-csv" class="button">
-            <!-- Download Logo by Denis Mikhutin: https://www.iconfinder.com/icons/1031520/arrow_download_save_icon#size=128 -->
-            <img src="media/downloadLogo.png" width="22">
-            <svg id="downloadLogo" width="130" height="18" onclick="download()">
-                <text x="8" y="14" font-size="16px" fill="white">Download CSV</text>
-            </svg>
-        </div>
+    <li class="topbarElement" onclick="download()">
+        Download CSV
     </li>
-    <li>
-        <button id="visbutton" class="button">
-            <!-- Vis Logo by HevnGrafix Design: https://www.iconfinder.com/icons/465076/analytics_charts_diagram_graph_marketing_seo_statistic_icon#size=128 -->
-            <img src="media/visLogo.png" width="22">
-            <svg id="downloadLogo" width="140" height="22" onclick="vis()">
-                <text x="8" y="18" font-size="16px" fill="white">Start Vis</text>
-            </svg>
-        </button>
+    <li class="topbarElement" onclick="vis()">
+        Start Vis
     </li>
 </ul>
 <br>

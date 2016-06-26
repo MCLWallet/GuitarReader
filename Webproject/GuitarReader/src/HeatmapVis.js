@@ -26,9 +26,7 @@ function heatmapVis(){
         .attr("id", "heatmap"+numVis)
         .attr("width", width)
         .attr("height", height)
-        .attr("transform", "translate(0,"+(margins.left-margins.top)+")")
-        .attr("class", "fadeIn");
-
+        .attr("transform", "translate(0,"+(margins.left-margins.top)+")");
 
     var stringLabels = svg.selectAll(".stringLabel")
         .data(strings).enter()

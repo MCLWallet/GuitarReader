@@ -4,8 +4,18 @@ body {
 
 h1 { color: white;
     font-weight: 300;
-    font-size: 30px;
+    font-size: 28px;
     margin: 0px 0px 0px 0px;
+    line-height: 120%;
+    font-family: 'Open sans', sans-serif;
+    text-align: left;
+}
+
+.topbarElement {
+    color: white;
+    font-weight: 300;
+    font-size: 24px;
+    padding: 15px 14px;
     line-height: 120%;
     font-family: 'Open sans', sans-serif;
     text-align: left;
@@ -39,7 +49,7 @@ li:hover{
     background-color: #123045;
 }
 
-#recordLogo:hover{
+#recordButton:hover{
     background-color: #123045;
 }
 #stopLogo:hover{
@@ -94,6 +104,8 @@ div.relative {
 .wrap {
     width: 2000px;
 }
+
+
 
 .left {
     width: 705px;
