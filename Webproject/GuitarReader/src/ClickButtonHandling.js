@@ -1,22 +1,12 @@
-/**
- * Created by MCL on 16.06.16.
- */
-
-
-var record = document.getElementById("recordbutton");
-var save = document.getElementById("savebutton");
-var download = document.getElementById("download-csv");
-var vis = document.getElementById("visbutton");
-
 
 // Starts the live guitar session
-record.onclick = function(){ recordSession();};
+function record(){ recordSession();};
 // Saves the session data into the array "filteredNotes"
-save.onclick = function(){ saveSession() };
+function save(){ saveSession() };
 // Downloading the session data as .csv
-download.onclick = function(){ downloadSession() };
+function download(){ downloadSession() };
 // Starts the visualization (line graph)
-vis.onclick = function(){
+function vis(){
     if(sessionSaved && !visRequested) {
         visLineGraph();
         heatmapVis();

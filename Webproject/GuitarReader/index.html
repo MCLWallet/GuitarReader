@@ -6,51 +6,72 @@
     <title>GuitarReader</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/animations.css">
-    <script src="lib/webmidi.min.js"></script>
-    <script src="lib/FileSaver.min.js"></script>
-    <script src="lib/d3.min.js"></script>
-    <script src="lib/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="lib/webmidi.min.js"></script>
+    <script type="text/javascript" src="lib/FileSaver.min.js"></script>
+    <script type="text/javascript" src="lib/d3.min.js"></script>
+    <script type="text/javascript" src="lib/d3-legend.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-3.0.0.min.js"></script>
 </head>
 <body>
-    <div id="title" class="slideDown">
-        <h1><b>GuitarReader.</b></h1>
-    </div>
-    <p><b></b></p>
 
-    <button id="recordbutton">
-        <svg id="recordLogo" width="70" height="18">
-            <circle cx="10" cy="10" r="7" fill="#d62728"></circle>
-            <text x="27" y="14" font-size="12px">Record</text>
-        </svg>
-    </button>
-    <button id="savebutton">
-        <svg id="stopLogo" width="150" height="18">
-            <rect height="15" width="15" x="2" y="2.5"></rect>
-            <text x="27" y="14" font-size="12px">Stop & Save Session</text>
-        </svg>
-    </button>
+
+<ul>
+    <li><a class="active">
+        <div id="title" class="slideDown">
+        <h1><b>GuitarReader.</b></h1>
+    </div></a></li>
+
+    <li onclick="record()">
+            <svg id="recordLogo" class="button" width="70" height="20">
+                <circle cx="0" cy="11" r="11" fill="#d62728"></circle>
+                <text x="24" y="18" font-size="17px" fill="white">Record</text>
+            </svg>
+    </li>
+    <li onclick="save()">
+            <svg id="stopLogo" class="button" width="180" height="20">
+                <rect height="22" width="22" x="0" y="0"></rect>
+                <text x="30" y="17" font-size="16px" fill="white">Stop & Save Session</text>
+            </svg>
+    </li>
+    <li onclick="download()">
+        <div id="download-csv" class="button">
+            <!-- Download Logo by Denis Mikhutin: https://www.iconfinder.com/icons/1031520/arrow_download_save_icon#size=128 -->
+            <img src="media/downloadLogo.png" width="22">
+            <svg id="downloadLogo" width="130" height="18">
+                <text x="8" y="14" font-size="16px" fill="white">Download CSV</text>
+            </svg>
+        </div>
+    </li>
+    <li onclick="vis()">
+        <button id="visbutton" class="button">
+            <!-- Vis Logo by HevnGrafix Design: https://www.iconfinder.com/icons/465076/analytics_charts_diagram_graph_marketing_seo_statistic_icon#size=128 -->
+            <img src="media/visLogo.png" width="22">
+            <svg id="downloadLogo" width="140" height="22">
+                <text x="8" y="18" font-size="16px" fill="white">Start Vis</text>
+            </svg>
+        </button>
+    </li>
+
+
+
+</ul>
+<div id="visTool" class="relative">
+
+
+
     <br>
     <br>
-    <button id="download-csv">
-        <!-- Download Logo by Denis Mikhutin: https://www.iconfinder.com/icons/1031520/arrow_download_save_icon#size=128 -->
-        <img src="media/downloadLogo.png" width="18">
-        <svg id="downloadLogo" width="95" height="18">
-            <text x="8" y="14" font-size="12px">Download CSV</text>
-        </svg>
-    </button>
-    <button id="visbutton">
-        <!-- Vis Logo by HevnGrafix Design: https://www.iconfinder.com/icons/465076/analytics_charts_diagram_graph_marketing_seo_statistic_icon#size=128 -->
-        <img src="media/visLogo.png" width="18">
-        <svg id="downloadLogo" width="58" height="18">
-            <text x="8" y="14" font-size="12px">Start Vis</text>
-        </svg>
-    </button>
     <br>
     <br>
+    <br>
+
 
     <svg id="status" width="200" height="25"></svg>
     <br>
     <br>
+</div>
+
+
 
     <script src="src/ChordsAggregator.js"></script>
     <script src="src/MidiInputReader.js"></script>

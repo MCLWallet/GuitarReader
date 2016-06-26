@@ -5,9 +5,16 @@ function streamGraphVis(){
     var strokeColor = streamGraphColors[0];
     console.log("streamGraphData", streamGraphData);
 
-    var margin = {top: 20, right: 40, bottom: 30, left: 30};
-    var width = 700 - margin.left - margin.right;
+    var varName = d3.keys(streamGraphData).filter(function(d){return d.key});
+    console.log("varName", varName);
+
+    var margin = {top: 10, right: 80, bottom: 30, left: 50};
+    var width = 700;
     var height = 400 - margin.top - margin.bottom;
+
+    var ordinal = d3.scale.ordinal()
+        .domain(["Power Chords", "other", "undefined", "Barre Chords", "Single Notes"])
+        .range(streamGraphColors);
 
     var tooltip = d3.select("body")
         .append("div")
@@ -19,7 +26,7 @@ function streamGraphVis(){
         .style("left", "55px");
 
     var x = d3.scale.linear()
-        .range([0, width]);
+        .range([0, width- margin.left - margin.right]);
 
     var y = d3.scale.linear()
         .range([height-10, 0]);
@@ -55,9 +62,10 @@ function streamGraphVis(){
 
     var svg = d3.select("body").append("div").attr("id", "stream").append("svg")
         .attr("id", "streamGraphVis"+numVis)
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width+ margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
+        .attr("id", "layers")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var graph = function(dat){
@@ -76,6 +84,7 @@ function streamGraphVis(){
     svg.selectAll(".layer")
         .data(layers)
         .enter().append("path")
+        .attr("id", function(d){ return d.key;})
         .attr("class", "layer")
         .attr("d", function(d) { return area(d.values); })
         .style("fill", function(d, i) { return z(i); });
@@ -87,12 +96,26 @@ function streamGraphVis(){
 
     svg.append("g")
         .attr("class", "y axis")
-        .attr("transform", "translate(" + width + ", 0)")
+        .attr("transform", "translate(" + (width - margin.left - margin.right) + ", 0)")
         .call(yAxis.orient("right"));
 
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis.orient("left"));
+
+
+    svg.append("g")
+        .attr("class", "legendOrdinal")
+        .attr("transform", "translate("+(width - margin.right+20)+", "+margin.top+")");
+
+    var legendOrdinal = d3.legend.color()
+        .shape("path", d3.svg.symbol().type("triangle-up").size(150)())
+        .shapePadding(10)
+        .scale(ordinal);
+
+    svg.select(".legendOrdinal")
+        .call(legendOrdinal);
+
 
     svg.selectAll(".layer")
         .attr("opacity", 1)
@@ -133,6 +156,5 @@ function streamGraphVis(){
                 .classed("hover", false)
                 .attr("stroke-width", "0px"), tooltip.html( "<p>" + d.key + "<br>" + pro + "</p>" ).style("visibility", "hidden");
         });
-
 
 }

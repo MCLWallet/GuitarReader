@@ -18,6 +18,9 @@ function visLineGraph(){
     var colorLegend = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"];
     var colorLegend2 = ["#004490", "#0374B3", "#0EB1D6", "#078AC2", "#76DBEC", "#60B1D9"];
 
+    var ordinal = d3.scale.ordinal()
+        .domain(stringNames)
+        .range(colorLegend);
 
     var x = d3.scale.linear().range([margins.left, width-margins.right]);
     var y = d3.scale.linear().range([height - margins.top, margins.bottom]);
@@ -87,11 +90,24 @@ function visLineGraph(){
 
     legend.append("rect")
         .attr("width", 140)
-        .attr("height", 120)
-        .attr("transform", "translate(80,20)")
+        .attr("height", 160)
+        .attr("transform", "translate(70,8)")
         .attr("fill", "white")
         .attr("stroke", "black");
 
+    svg.append("g")
+        .attr("class", "legendOrdinal")
+        .attr("transform", "translate(92,22)");
+
+    var legendOrdinal = d3.legend.color()
+        .shape("path", d3.svg.symbol().type("triangle-up").size(150)())
+        .shapePadding(10)
+        .scale(ordinal);
+
+    svg.select(".legendOrdinal")
+        .call(legendOrdinal);
+
+    /*
     var pos = 35;
     for (var k = 0; k<6; k++){
         legend.append("circle")
@@ -105,7 +121,7 @@ function visLineGraph(){
             .text(stringNames[k])
         pos += 18;
     }
-
+*/
     numVis++;
 }
 
