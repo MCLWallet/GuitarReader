@@ -11,7 +11,7 @@ var vis = document.getElementById("visbutton");
 
 // Starts the live guitar session
 record.onclick = function(){ recordSession();};
-// Saves the session data into the array "data"
+// Saves the session data into the array "filteredNotes"
 save.onclick = function(){ saveSession() };
 // Downloading the session data as .csv
 download.onclick = function(){ downloadSession() };
@@ -20,6 +20,7 @@ vis.onclick = function(){
     if(sessionSaved && !visRequested) {
         visLineGraph();
         heatmapVis();
+        streamGraphVis();
         visRequested = true;
 
     }

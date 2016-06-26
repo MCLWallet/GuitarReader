@@ -13,16 +13,16 @@ function visLineGraph(){
             bottom: 20,
             left: 54
         };
-    var stringNames = new Array("E (6th String)", "A (5th String)", "d (4th String)",
-        "g (3th String)", "b (2th String)", "e (1th String)");
-    var colorLegend = new Array("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b");
-    var colorLegend2 = new Array("#004490", "#0374B3", "#0EB1D6", "#078AC2", "#76DBEC", "#60B1D9");
+    var stringNames = ["E (6th String)", "A (5th String)", "d (4th String)",
+        "g (3th String)", "b (2th String)", "e (1th String)"];
+    var colorLegend = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"];
+    var colorLegend2 = ["#004490", "#0374B3", "#0EB1D6", "#078AC2", "#76DBEC", "#60B1D9"];
 
 
     var x = d3.scale.linear().range([margins.left, width-margins.right]);
     var y = d3.scale.linear().range([height - margins.top, margins.bottom]);
-    var xScale = x.domain([0, data[data.length-1][3]]);
-    var yScale = y.domain([1, data.length/3]);
+    var xScale = x.domain([0, filteredNotes[filteredNotes.length-1][3]]);
+    var yScale = y.domain([1, filteredNotes.length/3]);
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom")

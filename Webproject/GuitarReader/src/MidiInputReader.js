@@ -1,5 +1,5 @@
 var notes;                                                      // Array with all notes information
-var data;                                                       // Array with filtered notes information
+var filteredNotes;                                                       // Array with filtered notes information
 var chords;                                                     // Array with chords information
 var notesCount = 0;                                             // counter for notes-array positions
 var notesOffCount = 0;
@@ -21,10 +21,11 @@ var sep = ",";                                                  // element seper
 var str;
 
 var heatmapData;
+var streamGraphData;
 
 function recordSession(){
     notes = new Array();
-    data = new Array();
+    filteredNotes = new Array();
     notesCount = 0;
     if (!recording) {
         var status = d3.select("#status");
@@ -91,45 +92,45 @@ function saveSession(){
         var firstTime = 0;
         for (var i = 0; i < notes.length;i++){
             if (i==0) firstTime = notes[i]["receivedTime"];
-            data[i] = new Array(5);
-            data[i][0] = i;                                         // id
+            filteredNotes[i] = new Array(5);
+            filteredNotes[i][0] = i;                                         // id
             switch (notes[i]["channel"]) {                          // string-name
                 case 6:
-                    data[i][1] = "E";
+                    filteredNotes[i][1] = "E";
                     break;
                 case 5:
-                    data[i][1] = "A";
+                    filteredNotes[i][1] = "A";
                     break;
                 case 4:
-                    data[i][1] = "d";
+                    filteredNotes[i][1] = "d";
                     break;
                 case 3:
-                    data[i][1] = "g";
+                    filteredNotes[i][1] = "g";
                     break;
                 case 2:
-                    data[i][1] = "b";
+                    filteredNotes[i][1] = "b";
                     break;
                 case 1:
-                    data[i][1] = "e'";
+                    filteredNotes[i][1] = "e'";
                     break;
                 default:
-                    data[i][1] = "N/A";
+                    filteredNotes[i][1] = "N/A";
                     break;
             }
 
-            //data[i][1] = notes[i]["channel"];
-            data[i][2] = notes[i]["note"]["number"];                        // MIDI-note number
-            data[i][3] = (notes[i]["receivedTime"] - firstTime)/1000;      // Received Time (in sec)
-            data[i][4] = notes[i]["velocity"];                              // Velocity
+            //filteredNotes[i][1] = notes[i]["channel"];
+            filteredNotes[i][2] = notes[i]["note"]["number"];                        // MIDI-note number
+            filteredNotes[i][3] = (notes[i]["receivedTime"] - firstTime)/1000;      // Received Time (in sec)
+            filteredNotes[i][4] = notes[i]["velocity"];                              // Velocity
 
         }
-        str = arrayToCSVString(csvHeader, data, sep);                        // converts "data" into the CSV-compatible string "str"
-        stats_E = createStats(data, "E");
-        stats_A = createStats(data, "A");
-        stats_d = createStats(data, "d");
-        stats_g = createStats(data, "g");
-        stats_b = createStats(data, "b");
-        stats_e = createStats(data, "e'");
+        str = arrayToCSVString(csvHeader, filteredNotes, sep);                        // converts "filteredNotes" into the CSV-compatible string "str"
+        stats_E = createStats(filteredNotes, "E");
+        stats_A = createStats(filteredNotes, "A");
+        stats_d = createStats(filteredNotes, "d");
+        stats_g = createStats(filteredNotes, "g");
+        stats_b = createStats(filteredNotes, "b");
+        stats_e = createStats(filteredNotes, "e'");
         stats = new Array(stats_E, stats_A, stats_d, stats_g, stats_b, stats_e);
 
 
@@ -156,28 +157,9 @@ function saveSession(){
 
         }
 
-
         chords = aggregateChords();
-        console.log("Chords", chords);
-
-        var pcCount = 0,
-            otherCount = 0,
-            undefinedCount = 0,
-            barreCount = 0,
-            singleCount = 0;
-        for (var k = 0; k<chords.length;k++){
-            if (chords[k]["key"]=="PC") pcCount++;
-            if (chords[k]["key"]=="other") otherCount++;
-            if (chords[k]["key"]=="undefined") undefinedCount++;
-            if (chords[k]["key"]=="BC") barreCount++;
-            if (chords[k]["key"]=="SN") singleCount++;
-
-        }
-        console.log("Power Chords", pcCount);
-        console.log("Other", otherCount);
-        console.log("Undefined", undefinedCount);
-        console.log("Barre Chords", barreCount);
-        console.log("Single Notes", singleCount);
+        streamGraphData = prepareStreamGraphData(chords);
+        console.log("streamGraphData", streamGraphData);
 
 
         sessionSaved = true;
@@ -189,9 +171,76 @@ function saveSession(){
 
 }
 
+/**
+ * Creates the array that is compatible for the streamgraph visualization
+ * @param arr StreamGraph Data
+ */
+function prepareStreamGraphData(arr){
+    var result = [];
 
+    var max = 0;
+    for (var i = 0; i < arr.length; i++){
+        if (arr[i]["time"] > max) max = arr[i]["time"];
+    }
+    max = Math.round(max);
+    console.log("max", max);
+    var count = 0;
+    for (var j = 0; j < max; j++){
+        console.log("count", count);
+        count++;
+        var pcCount = 0,
+            otherCount = 0,
+            undefinedCount = 0,
+            barreCount = 0,
+            singleCount = 0;
+        for (var k = 0; k < arr.length; k++){
+            if (arr[k]["time"]>=j && arr[k]["time"]<j+1){
+                if (arr[k]["key"]=="PC") pcCount++;
+                if (arr[k]["key"]=="other") otherCount++;
+                if (arr[k]["key"]=="undefined") undefinedCount++;
+                if (arr[k]["key"]=="BC") barreCount++;
+                if (arr[k]["key"]=="SN") singleCount++;
+            }
+        }
+        result.push({"key":"PC", "time":j, "value":pcCount});
+        result.push({"key":"other", "time":j, "value":otherCount});
+        result.push({"key":"undefined", "time":j, "value":undefinedCount});
+        result.push({"key":"BC", "time":j, "value":barreCount});
+        result.push({"key":"SN", "time":j, "value":singleCount});
+    }
 
+    return result;
+}
 
+/**
+ *
+ * @param arr
+ */
+function consoleOutChordStats(arr){
+    var pcCount = 0,
+        otherCount = 0,
+        undefinedCount = 0,
+        barreCount = 0,
+        singleCount = 0;
+    for (var k = 0; k<arr.length;k++){
+        if (chords[k]["key"]=="PC") pcCount++;
+        if (chords[k]["key"]=="other") otherCount++;
+        if (chords[k]["key"]=="undefined") undefinedCount++;
+        if (chords[k]["key"]=="BC") barreCount++;
+        if (chords[k]["key"]=="SN") singleCount++;
+
+    }
+    console.log("Chords", chords);
+    console.log("Power Chords", pcCount);
+    console.log("Other", otherCount);
+    console.log("Undefined", undefinedCount);
+    console.log("Barre Chords", barreCount);
+    console.log("Single Notes", singleCount);
+}
+
+/**
+ *
+ */
 function downloadSession(){
     if (sessionSaved){
         var blob = new Blob([str], {type:"text/plain;charset=utf-8"});
@@ -281,7 +330,6 @@ function getIndexOfTime(arr, t){
 
 
 /**
- * TODO: Barre-Chords Array
  * TODO: Funk-Chords Array (nice to have)
  * TODO: Open-Chords Array (not essential for presentation)
  *
