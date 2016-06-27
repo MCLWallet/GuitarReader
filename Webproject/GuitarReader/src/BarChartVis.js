@@ -1,8 +1,8 @@
 
 function barChartVis(){
-    var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 500,
-        height = 300;
+    var margin = {top: 40, right: 20, bottom: 30, left: 40},
+        width = 484,
+        height = 390;
 
     var x = d3.scale.ordinal()
         .rangeRoundBands([0, width], .1);
@@ -24,6 +24,7 @@ function barChartVis(){
     var svg = d3.select("body").select("#barChartElement").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
+        .attr("style", "border-style: solid; border-width:1px")
         .append("g")
         .attr("transform", "translate(" + (margin.left) + "," + margin.top + ")");
 
@@ -43,10 +44,12 @@ function barChartVis(){
         .call(yAxis)
         .append("text")
         .attr("transform", "rotate(-90)")
-        .attr("y", 6)
+        .attr("x", -40)
+        .attr("y", 10)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Amount");
+        .style("font-weight", "bold")
+        .text("times played");
 
     svg.selectAll(".bar")
         .data(barChartData)
@@ -57,6 +60,20 @@ function barChartVis(){
         .attr("y", function(d) { return y(d.value); })
         .attr("height", function(d) { return height-margin.bottom - y(d.value); })
         .attr("onmouseover", function(d){ return "onMouseEnterBar("+ d.key+")";});
+
+    svg.append("text")
+        .attr("x", 0)
+        .attr("y", -10)
+        .attr("font-weight", "bold")
+        .attr("font-size", "18")
+        .text("Types of Chords/Notes played (total)");
+
+    svg.append("line")
+        .attr("x1", -30)
+        .attr("y1", 0)
+        .attr("x2", 500)
+        .attr("y2", 0)
+        .attr("style", "stroke:rgb(0,0,0);stroke-width:1");
 
     function type(d) {
         d.value = +d.value;

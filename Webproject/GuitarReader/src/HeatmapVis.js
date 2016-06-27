@@ -5,13 +5,13 @@
 
  */
 function heatmapVis(){
-    var width = 1024,
-        height = 400,
+    var width = 1000,
+        height = 460,
         margins = {
             top: 20,
             right:20,
             bottom: 20,
-            left: 20
+            left: 50
         };
     var gridSize = Math.floor((width-margins.left-margins.right)/22);
     var legendWidth = gridSize*2;
@@ -19,28 +19,30 @@ function heatmapVis(){
     var colorLegend = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494"];
     var strings = ["e", "b", "g", "d", "A", "E"];
     var frets = new Array(22);
-    for (var f = 0; f<=22; f++) frets[f] = f;
+    for (var f = 0; f<22; f++) frets[f] = f;
 
 
     var svg = d3.select("body").select("#heatmapElement").append("svg")
         .attr("id", "heatmap"+numVis)
-        .attr("width", width)
+        .attr("width", width+40)
         .attr("height", height)
-        .attr("transform", "translate(0,"+(margins.left-margins.top)+")");
+        .attr("transform", "translate(0,"+(0)+")")
+        .attr("style", "border-style: solid; border-width:1px");
+
 
     var stringLabels = svg.selectAll(".stringLabel")
         .data(strings).enter()
         .append("text")
         .text(function(d){return d;})
         .attr("x", margins.left)
-        .attr("y", function(d,i){ return 10+margins.top + margins.bottom + i * gridSize;});
+        .attr("y", function(d,i){ return 105+margins.top + margins.bottom + i * gridSize;});
 
     var fretLabels = svg.selectAll(".fretLabel")
         .data(frets).enter()
         .append("text")
         .text(function(d){return d;})
         .attr("x", function(d,i){ return 16+margins.left + margins.right + i * gridSize;})
-        .attr("y", margins.top);
+        .attr("y", margins.top+90);
 
     var colorScale = d3.scale.quantile()
         .domain([0, buckets-1, d3.max(heatmapData, function(d){ return d.amount;})])
@@ -53,7 +55,7 @@ function heatmapVis(){
 
     cards.enter().append("rect")
         .attr("x", function(d) { return 44+margins.left+margins.right+(d.fret -1) * gridSize;})
-        .attr("y", function(d) { return 6+margins.top+(d.string -1) * gridSize;})
+        .attr("y", function(d) { return 100+margins.top+(d.string -1) * gridSize;})
         .attr("rx", 4)
         .attr("ry", 4)
         .attr("class", "hour bordered")
@@ -76,7 +78,7 @@ function heatmapVis(){
 
     legend.append("rect")
         .attr("x", function(d, i) { return margins.left+margins.right+legendWidth * i; })
-        .attr("y", 350)
+        .attr("y", 400)
         .attr("width", legendWidth)
         .attr("height", gridSize / 2)
         .style("fill", function(d, i) { return colorLegend[i]; });
@@ -85,8 +87,39 @@ function heatmapVis(){
         .attr("class", "mono")
         .text(function(d) { return "≥ " + Math.round(d); })
         .attr("x", function(d, i) { return legendWidth * i+margins.left+50; })
-        .attr("y", 350 + gridSize);
+        .attr("y", 400 + gridSize);
 
     legend.exit().remove();
+
+    svg.append("text")
+        .attr("x", 50)
+        .attr("y", 30)
+        .attr("font-weight", "bold")
+        .attr("font-size", "18")
+        .text("Note Heatmap");
+
+    svg.append("line")
+        .attr("x1", 10)
+        .attr("y1", 38)
+        .attr("x2", width+30)
+        .attr("y2", 38)
+        .attr("style", "stroke:rgb(0,0,0);stroke-width:1");
+
+    svg.append("text")
+        .attr("x", 40-height/2)
+        .attr("y", 30)
+        .attr("transform", "rotate(-90)")
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .style("font-weight", "bold")
+        .text("strings");
+
+    svg.append("text")
+        .attr("x", (width/2)+50)
+        .attr("y", 75)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .style("font-weight", "bold")
+        .text("frets");
 
 }

@@ -23,13 +23,13 @@ function visLineGraph(){
         .range(colorLegend);
 
     var x = d3.scale.linear().range([margins.left, width-margins.right]);
-    var y = d3.scale.linear().range([height - margins.top, margins.bottom]);
+    var y = d3.scale.linear().range([height-margins.bottom, margins.top+margins.bottom]);
     var xScale = x.domain([0, filteredNotes[filteredNotes.length-1][3]]);
     var yScale = y.domain([1, filteredNotes.length/3]);
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom")
-        .innerTickSize(-height+margins.top+margins.bottom)
+        .innerTickSize(-height+margins.top+margins.bottom+30)
         .outerTickSize(0)
         .tickPadding(10);
     var yAxis = d3.svg.axis()
@@ -43,7 +43,8 @@ function visLineGraph(){
         .attr("id", "line"+numVis)
         .attr("width", width+margins.left+margins.right)
         .attr("height", height+margins.top+margins.bottom)
-        .attr("transform", "translate(0,"+(height-margins.bottom)+")");
+        .attr("transform", "translate(0,"+(height-margins.bottom)+")")
+        .attr("style", "border-style: solid; border-width:1px");
     svg.append("g")
         .attr("id", "xAxis"+numVis)
         .attr("class", "axis")
@@ -56,17 +57,20 @@ function visLineGraph(){
         .call(yAxis);
 
     svg.append("text")
-        .attr("x", 50-height/2)
+        .attr("x", 40-height/2)
+        .attr("y", 8)
         .attr("transform", "rotate(-90)")
         .attr("dy", ".71em")
         .style("text-anchor", "end")
+        .style("font-weight", "bold")
         .text("times played");
 
     svg.append("text")
-        .attr("x", (width/2)+70)
+        .attr("x", (width/2)+50)
         .attr("y", height+10)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
+        .style("font-weight", "bold")
         .text("time (in sec)");
 
     var line = d3.svg.line()
@@ -84,7 +88,21 @@ function visLineGraph(){
             .attr("fill", "none");
     }
 
+    svg.append("text")
+        .attr("x", 50)
+        .attr("y", 30)
+        .attr("font-weight", "bold")
+        .attr("font-size", "18")
+        .text("Strings played over time");
 
+    svg.append("line")
+        .attr("x1", 10)
+        .attr("y1", 38)
+        .attr("x2", width+margins.right+margins.left-20)
+        .attr("y2", 38)
+        .attr("style", "stroke:rgb(0,0,0);stroke-width:1");
+
+    /*
     var legend = svg.append("g");
 
     legend.append("rect")
@@ -105,22 +123,8 @@ function visLineGraph(){
 
     svg.select(".legendOrdinal")
         .call(legendOrdinal);
+        */
 
-    /*
-    var pos = 35;
-    for (var k = 0; k<6; k++){
-        legend.append("circle")
-            .attr("r", 8)
-            .attr("fill", colorLegend[k])
-            .attr("cx", 95)
-            .attr("cy", pos);
-        legend.append("text")
-            .attr("x", 112)
-            .attr("y", pos+5)
-            .text(stringNames[k])
-        pos += 18;
-    }
-*/
     numVis++;
 }
 

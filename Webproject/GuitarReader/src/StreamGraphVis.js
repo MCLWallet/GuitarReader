@@ -26,10 +26,10 @@ function streamGraphVis(){
         .style("left", "55px");
 
     var x = d3.scale.linear()
-        .range([0, width- margin.left - margin.right]);
+        .range([margin.left, width- margin.left - margin.right]);
 
     var y = d3.scale.linear()
-        .range([height-10, 0]);
+        .range([height, margin.top]);
 
     var z = d3.scale.ordinal()
         .range(streamGraphColors);
@@ -63,10 +63,12 @@ function streamGraphVis(){
     var svg = d3.select("body").select("#streamGraphElement").append("div").attr("id", "stream").append("svg")
         .attr("id", "streamGraphVis"+numVis)
         .attr("width", width+ margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("height", height + margin.top + margin.bottom+60)
+        .attr("style", "border-style: solid; border-width:1px")
         .append("g")
         .attr("id", "layers")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
 
     var graph = function(dat){
         dat.forEach(function(d){
@@ -104,6 +106,7 @@ function streamGraphVis(){
     svg.append("g")
         .attr("class", "y axis")
         .attr("stroke-width", 2)
+        .attr("transform", "translate(" + (margin.left) + ", 0)")
         .call(yAxis.orient("left"));
 
 
@@ -118,6 +121,46 @@ function streamGraphVis(){
 
     svg.select(".legendOrdinal")
         .call(legendOrdinal);
+
+    svg.append("text")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("font-weight", "bold")
+        .attr("font-size", "18")
+        .text("Types of Chords/Notes played over time");
+
+    svg.append("line")
+        .attr("x1", -20)
+        .attr("y1", 8)
+        .attr("x2", width+70)
+        .attr("y2", 8)
+        .attr("style", "stroke:rgb(0,0,0);stroke-width:1");
+
+    svg.append("text")
+        .attr("x", -160)
+        .attr("y", -18)
+        .attr("transform", "rotate(-90)")
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .style("font-weight", "bold")
+        .text("times played");
+
+    svg.append("text")
+        .attr("x", 240)
+        .attr("y", -640)
+        .attr("transform", "rotate(90)")
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .style("font-weight", "bold")
+        .text("times played");
+
+    svg.append("text")
+        .attr("x", 350)
+        .attr("y", 440)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .style("font-weight", "bold")
+        .text("time (in sec)");
 
 
 
