@@ -78,7 +78,7 @@ function getBarreChords(){
     // 20 possible BarreChords
     var firstTime = notes[0]["receivedTime"];
 
-    var sampleSize = randomBetween(10, 20);                          // Sampling between 8-15
+    var sampleSize = randomBetween(10, 15);                          // Sampling between 8-15
     var note, channel;
     var count = 0;
     var i;
@@ -124,12 +124,12 @@ function getBarreChords(){
                                 }
                                 break;
                             case 5:
-                                if (samples[s]["note"]["number"]==chord[1]){
+                                if (samples[s]["note"]["number"]==chord[1] || samples[s]["note"]["number"]==chord[1]-2){
                                     potential++;
                                 }
                                 break;
                             case 4:
-                                if (samples[s]["note"]["number"]==chord[2]){
+                                if (samples[s]["note"]["number"]==chord[2] || samples[s]["note"]["number"]==chord[2]-2){
                                     potential++;
                                 }
                                 break;
@@ -174,7 +174,7 @@ function getBarreChords(){
                     barreArray.push({"key":"SN", "time":timeOfMeasurement});
                 }
             }
-            sampleSize = randomBetween(10,20);
+            sampleSize = randomBetween(10,15);
             count += sampleSize;
         }
     }

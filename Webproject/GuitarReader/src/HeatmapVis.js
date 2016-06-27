@@ -6,7 +6,7 @@
  */
 function heatmapVis(){
     var width = 1024,
-        height = 512,
+        height = 400,
         margins = {
             top: 20,
             right:20,

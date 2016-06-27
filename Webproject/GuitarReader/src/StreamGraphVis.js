@@ -8,9 +8,9 @@ function streamGraphVis(){
     var varName = d3.keys(streamGraphData).filter(function(d){return d.key});
     console.log("varName", varName);
 
-    var margin = {top: 10, right: 80, bottom: 30, left: 50};
+    var margin = {top: 30, right: 80, bottom: 30, left: 30};
     var width = 700;
-    var height = 400 - margin.top - margin.bottom;
+    var height = 400;
 
     var ordinal = d3.scale.ordinal()
         .domain(["Power Chords", "other"/*, "undefined"*/, "Barre Chords", "Single Notes"])
@@ -92,15 +92,18 @@ function streamGraphVis(){
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
+        .attr("stroke-width", 2)
         .call(xAxis);
 
     svg.append("g")
         .attr("class", "y axis")
         .attr("transform", "translate(" + (width - margin.left - margin.right) + ", 0)")
+        .attr("stroke-width", 2)
         .call(yAxis.orient("right"));
 
     svg.append("g")
         .attr("class", "y axis")
+        .attr("stroke-width", 2)
         .call(yAxis.orient("left"));
 
 
@@ -116,15 +119,23 @@ function streamGraphVis(){
     svg.select(".legendOrdinal")
         .call(legendOrdinal);
 
-    /*
-    svg.selectAll(".layer")
-        .attr("opacity", 1)
-        .on("mouseover", function(d, i) {
-            svg.selectAll(".layer").transition()
-                .duration(250)
-                .attr("opacity", function(d, j) {
-                    return j != i ? 0.6 : 1;
-                })});
-                */
 
+
+
+
+}
+
+/**
+ *
+ * @param id
+ */
+function onMouseEnterBar(id){
+    console.log("id", id);
+    document.getElementById(id.id).fill = "black";
+    /*
+    var svg = d3.select("#streamGraphElement");
+    svg.select("#"+id).transition()
+        .duration(250)
+        .attr("opacity", 0.6);
+        */
 }

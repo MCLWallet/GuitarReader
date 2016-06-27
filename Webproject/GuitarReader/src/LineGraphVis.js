@@ -6,11 +6,11 @@ var visRequested = false;
 // Starts the visualization (line graph)
 function visLineGraph(){
     var width = 700,
-        height = 400,
+        height = 460,
         margins = {
-            top: 20,
-            right:60,
-            bottom: 20,
+            top: 30,
+            right:20,
+            bottom: 30,
             left: 54
         };
     var stringNames = ["E (6th String)", "A (5th String)", "d (4th String)",
@@ -42,7 +42,7 @@ function visLineGraph(){
     var svg = d3.select("body").select("#lineGraphElement").append("svg")
         .attr("id", "line"+numVis)
         .attr("width", width+margins.left+margins.right)
-        .attr("height", height+50)
+        .attr("height", height+margins.top+margins.bottom)
         .attr("transform", "translate(0,"+(height-margins.bottom)+")");
     svg.append("g")
         .attr("id", "xAxis"+numVis)
@@ -144,3 +144,5 @@ function getMaxStrings(){
   if (stats_e.length>=max) max=stats_e.length;
   return max;
 }
+
+// TODO: fix tick axis bug

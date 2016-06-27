@@ -102,15 +102,15 @@ div.relative {
 }
 
 .wrap {
-    width: 2000px;
+    width: 2300px;
 }
 
 
 
 .left {
     width: auto;
-    height: auto;
-    margin: 50px;
+    height: 500px;
+    margin: 20px;
     float: left;
 }
 .right {
@@ -133,6 +133,8 @@ div.relative {
 .bar:hover {
     fill: brown;
 }
+
+
 
 
 

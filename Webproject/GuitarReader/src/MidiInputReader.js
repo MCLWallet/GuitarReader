@@ -372,10 +372,11 @@ function getIndexOfTime(arr, t){
 
 
 /**
+ *
+ * TODO: Interaction between graphs/vis (Hover over, Focus, ...)
+ *
+ *
  * TODO: Funk-Chords Array (nice to have)
  * TODO: Open-Chords Array (not essential for presentation)
- *
- * TODO: find undefined PowerChords Bug
- *
  *
  */
