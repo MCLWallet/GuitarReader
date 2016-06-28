@@ -11,6 +11,8 @@ var stats,
     stats_b,
     stats_e;
 
+var maxString;
+
 var barreChords;
 
 var sessionSaved = false,
@@ -174,7 +176,8 @@ function saveSession(){
         chords = aggregateChords();
         streamGraphData = prepareStreamGraphData(chords);
         barChartData = prepareBarChartData(chords);
-        console.log("streamGraphData", streamGraphData);
+        maxString = getMaxString();
+        //console.log("streamGraphData", streamGraphData);
 
 
         sessionSaved = true;
@@ -198,10 +201,10 @@ function prepareStreamGraphData(arr){
         if (arr[i]["time"] > max) max = arr[i]["time"];
     }
     max = Math.round(max);
-    console.log("max", max);
+    //console.log("max", max);
     var count = 0;
     for (var j = 0; j < max; j++){
-        console.log("count", count);
+        //console.log("count", count);
         count++;
         var pcCount = 0,
             otherCount = 0,
@@ -235,17 +238,17 @@ function prepareBarChartData(arr){
     var result;
 
     var pcCount = 0,
-        otherCount = 0,
+        //otherCount = 0,
         barreCount = 0,
         singleCount = 0;
     for (var k = 0; k < arr.length; k++){
         if (arr[k]["key"]=="PC") pcCount++;
-        if (arr[k]["key"]=="other") otherCount++;
+        //if (arr[k]["key"]=="other") otherCount++;
         if (arr[k]["key"]=="BC") barreCount++;
         if (arr[k]["key"]=="SN") singleCount++;
     }
     result = [{"key":"PC", "value":pcCount},
-            {"key":"other", "value":otherCount},
+            //{"key":"other", "value":otherCount},
             {"key":"BC", "value":barreCount},
             {"key":"SN", "value":singleCount}
     ];
@@ -292,6 +295,42 @@ function downloadSession(){
     else{
         window.alert("Record a session first!");
     }
+}
+
+function getMaxString(){
+    var result = 0;
+    var max_E = 0,
+        max_A = 0,
+        max_d = 0,
+        max_g = 0,
+        max_b = 0,
+        max_e = 0;
+    for(var i = 0; i<notes.length; i++){
+        switch (notes[i]["channel"]) {
+          case 6:
+              max_E++;
+              break;
+          case 5:
+              max_A++;
+              break;
+          case 4:
+              max_d++;
+              break;
+          case 3:
+              max_g++;
+              break;
+          case 2:
+              max_b++;
+              break;
+          case 1:
+              max_e++;
+              break;
+          default:
+              break;
+        }
+    }
+    result = Math.max(max_E, max_A, max_d, max_g, max_b, max_e);
+    return result;
 }
 
 /**

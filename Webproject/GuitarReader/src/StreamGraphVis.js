@@ -1,19 +1,19 @@
 
 
 function streamGraphVis(){
-    var streamGraphColors = ["#045A8D", "#2B8CBE", "#74A9CF", "#A6BDDB", "#D0D1E6"/*, "#F1EEF6"*/];
+    var streamGraphColors = ["#045A8D", "#2B8CBE", "#74A9CF", "#A6BDDB"/*, "#D0D1E6", "#F1EEF6"*/];
     var strokeColor = streamGraphColors[0];
-    console.log("streamGraphData", streamGraphData);
+    //console.log("streamGraphData", streamGraphData);
 
     var varName = d3.keys(streamGraphData).filter(function(d){return d.key});
-    console.log("varName", varName);
+    //console.log("varName", varName);
 
     var margin = {top: 30, right: 80, bottom: 30, left: 30};
     var width = 700;
     var height = 400;
 
     var ordinal = d3.scale.ordinal()
-        .domain(["Power Chords", "other"/*, "undefined"*/, "Barre Chords", "Single Notes"])
+        .domain(["Power Chords", /*"other", "undefined"*/ "Barre Chords", "Single Notes"])
         .range(streamGraphColors);
 
     var tooltip = d3.select("body")
@@ -77,7 +77,7 @@ function streamGraphVis(){
     };
 
     var layers = stack(nest.entries(streamGraphData));
-    console.log ("layers", layers);
+    //console.log ("layers", layers);
 
 
     x.domain([0, d3.max(streamGraphData, function(d){ return d.time})]);
@@ -173,7 +173,7 @@ function streamGraphVis(){
  * @param id
  */
 function onMouseEnterBar(id){
-    console.log("id", id);
+    //console.log("id", id);
     document.getElementById(id.id).fill = "black";
     /*
     var svg = d3.select("#streamGraphElement");

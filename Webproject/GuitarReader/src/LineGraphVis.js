@@ -25,7 +25,7 @@ function visLineGraph(){
     var x = d3.scale.linear().range([margins.left, width-margins.right]);
     var y = d3.scale.linear().range([height-margins.bottom, margins.top+margins.bottom]);
     var xScale = x.domain([0, filteredNotes[filteredNotes.length-1][3]]);
-    var yScale = y.domain([1, filteredNotes.length/3]);
+    var yScale = y.domain([1, maxString]);
     var xAxis = d3.svg.axis()
         .scale(xScale)
         .orient("bottom")
@@ -102,19 +102,19 @@ function visLineGraph(){
         .attr("y2", 38)
         .attr("style", "stroke:rgb(0,0,0);stroke-width:1");
 
-    /*
+
     var legend = svg.append("g");
 
     legend.append("rect")
-        .attr("width", 140)
-        .attr("height", 160)
-        .attr("transform", "translate(70,8)")
+        .attr("width", 120)
+        .attr("height", 140)
+        .attr("transform", "translate(70,60)")
         .attr("fill", "white")
         .attr("stroke", "black");
 
     svg.append("g")
         .attr("class", "legendOrdinal")
-        .attr("transform", "translate(92,22)");
+        .attr("transform", "translate(85,75)");
 
     var legendOrdinal = d3.legend.color()
         .shape("path", d3.svg.symbol().type("triangle-up").size(60)())
@@ -123,7 +123,7 @@ function visLineGraph(){
 
     svg.select(".legendOrdinal")
         .call(legendOrdinal);
-        */
+
 
     numVis++;
 }
@@ -138,15 +138,5 @@ function mousemove(stats) {
     focus.select("text").text(formatCurrency(d.played));
 }
 
-function getMaxStrings(){
-  var max = 0;
-  if (stats_E.length>=max) max=stats_E.length;
-  if (stats_A.length>=max) max=stats_A.length;
-  if (stats_d.length>=max) max=stats_d.length;
-  if (stats_g.length>=max) max=stats_g.length;
-  if (stats_b.length>=max) max=stats_b.length;
-  if (stats_e.length>=max) max=stats_e.length;
-  return max;
-}
 
 // TODO: fix tick axis bug
