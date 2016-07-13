@@ -6,6 +6,7 @@
     <title>GuitarReader</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/metronome.css">
     <script type="text/javascript" src="lib/webmidi.min.js"></script>
     <script type="text/javascript" src="lib/FileSaver.min.js"></script>
     <script type="text/javascript" src="lib/d3.min.js"></script>
@@ -43,6 +44,8 @@
 <svg id="status" width="200" height="25"></svg>
 <br>
 <br>
+<div><input id="bpm" type="number" name="bpm" value="60" size="3"/> bpm</div>
+
 <div id="timeBasedVis" class="wrap">
     <div id="lineGraphElement" class="left"></div>
     <div id="streamGraphElement" class="left"></div>
@@ -51,7 +54,7 @@
 
 </div>
 
-
+<script src="src/metronome.js"></script>
 <script src="src/ChordsAggregator.js"></script>
 <script src="src/MidiInputReader.js"></script>
 <script src="src/LineGraphVis.js"></script>

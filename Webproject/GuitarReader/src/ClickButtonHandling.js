@@ -1,8 +1,17 @@
-
 // Starts the live guitar session
-function record(){ recordSession();};
+function record(){
+    startMetronome();
+    recordSession();
+    console.log("bpm", bpm);
+}
+
 // Saves the session data into the array "filteredNotes"
-function save(){ saveSession() };
+function save(){
+    stopMetronome();
+    saveSession();
+
+}
+
 // Downloading the session data as .csv
 function download(){ downloadSession() };
 // Starts the visualization (line graph)

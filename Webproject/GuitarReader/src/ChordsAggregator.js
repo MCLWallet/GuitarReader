@@ -124,12 +124,12 @@ function getBarreChords(){
                                 }
                                 break;
                             case 5:
-                                if (samples[s]["note"]["number"]==chord[1] || samples[s]["note"]["number"]==chord[1]-2){
+                                if (samples[s]["note"]["number"]==chord[1]){
                                     potential++;
                                 }
                                 break;
                             case 4:
-                                if (samples[s]["note"]["number"]==chord[2] || samples[s]["note"]["number"]==chord[2]-2){
+                                if (samples[s]["note"]["number"]==chord[2]){
                                     potential++;
                                 }
                                 break;

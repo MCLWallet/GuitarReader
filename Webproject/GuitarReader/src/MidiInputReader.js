@@ -26,6 +26,9 @@ var heatmapData;
 var streamGraphData;
 var barChartData;
 
+/**
+ *
+ */
 function recordSession(){
     notes = new Array();
     filteredNotes = new Array();
@@ -83,6 +86,9 @@ function recordSession(){
     }
 }
 
+/**
+ *
+ */
 function saveSession(){
     if (recording && !sessionSaved){
         var status = d3.select("#status");
@@ -413,7 +419,8 @@ function getIndexOfTime(arr, t){
 /**
  *
  * TODO: Interaction between graphs/vis (Hover over, Focus, ...)
- *
+ * TODO: Implement Metronome
+ * TODO: Comparism Vis between sessions
  *
  * TODO: Funk-Chords Array (nice to have)
  * TODO: Open-Chords Array (not essential for presentation)
