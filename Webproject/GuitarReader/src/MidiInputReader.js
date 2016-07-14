@@ -61,19 +61,13 @@ function recordSession(){
             if (err) console.log("WebMidi could not be enabled");
             var input = WebMidi.inputs[0];
             input.addListener("noteon", "all", function(e){
-                //console.log("NoteOn "+notesCount+":",e);
-                notes[notesCount] = e;
-
-                /*
-                if (notesCount>=20 && notesCount%20==0){
-                    var barreNotes = [];
-                    var test = getBarreChords(1, notesCount, barreNotes);
-                    console.log("Recursion Array", test);
-
+                if (recordStart){
+                    //console.log("NoteOn "+notesCount+":",e);
+                    console.log("context.currentTime Note played", context.currentTime);
+                    notes[notesCount] = e;
+                    notesCount++;
                 }
-                */
 
-                notesCount++;
             });
 
         });
@@ -142,7 +136,7 @@ function saveSession(){
 
             //filteredNotes[i][1] = notes[i]["channel"];
             filteredNotes[i][2] = notes[i]["note"]["number"];                        // MIDI-note number
-            filteredNotes[i][3] = (notes[i]["receivedTime"] - firstTime)/1000;      // Received Time (in sec)
+            filteredNotes[i][3] = ((notes[i]["receivedTime"])/1000)-firstBeat;      // Received Time (in sec)
             filteredNotes[i][4] = notes[i]["velocity"];                              // Velocity
 
         }
@@ -188,6 +182,8 @@ function saveSession(){
 
         sessionSaved = true;
         recording = false;
+
+        console.log("filtered notes", filteredNotes);
     }
     else {
         window.alert("Record a session first!");

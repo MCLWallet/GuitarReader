@@ -192,10 +192,22 @@ function initAudio()
     }
 }
 
+var preludeCounter = 0;
+var firstBeat = 0;                          // time when the first metronome hit came
+var recordStart = false;
+
 // Set the frequency of the oscillator and start it running.
 function startTone( frequency )
 {
+    preludeCounter++;
+    if (preludeCounter==5){
+        firstBeat = context.currentTime;
+        recordStart = true;
+        console.log("firstBeat", firstBeat);
+
+    }
     var now = context.currentTime;
+
 
     oscillator.frequency.setValueAtTime(frequency, now);
 
@@ -207,6 +219,9 @@ function startTone( frequency )
     amp.gain.setValueAtTime(amp.gain.value, now);
     amp.gain.linearRampToValueAtTime(0.5, context.currentTime + 0.01);
     amp.gain.linearRampToValueAtTime(0.0, context.currentTime + 0.11);
+    //console.log("Date Now", Date.now());
+    console.log("context.currentTime Metronome", context.currentTime);
+
 }
 
 
