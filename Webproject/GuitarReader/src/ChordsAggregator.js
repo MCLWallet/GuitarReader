@@ -19,17 +19,17 @@ function aggregateChords(){
 function getPowerChords(){
     var powerArray = [];
 
-    for (var i = 1; i<notes.length; i++){
-        var lastReceived = notes[i]["receivedTime"];
-        var deltaTime = lastReceived-notes[i-1]["receivedTime"];
-        var firstNote = notes[i-1]["note"]["number"];
-        var secondNote = notes[i]["note"]["number"];
+    for (var i = 1; i<notesOn.length; i++){
+        var lastReceived = notesOn[i]["receivedTime"];
+        var deltaTime = lastReceived-notesOn[i-1]["receivedTime"];
+        var firstNote = notesOn[i-1]["note"]["number"];
+        var secondNote = notesOn[i]["note"]["number"];
 
         var element;
 
-        switch (notes[i]["channel"]){
+        switch (notesOn[i]["channel"]){
             case 6:
-                if (notes[i-1]["channel"]==5 && deltaTime<=15){
+                if (notesOn[i-1]["channel"]==5 && deltaTime<=15){
                     if (firstNote-secondNote==7) element = {"key":"PC", "time":(lastReceived/1000)};
                     else element = {"key":"other", "time":(lastReceived/1000)};
                 }
@@ -37,11 +37,11 @@ function getPowerChords(){
                 break;
             case 5:
                 if (deltaTime<=15){
-                    if (notes[i-1]["channel"]==6){
+                    if (notesOn[i-1]["channel"]==6){
                         if (secondNote-firstNote==7) element = {"key":"PC", "time":(lastReceived/1000)};
                         else element = {"key":"other", "time":(lastReceived/1000)};
                     }
-                    else if (notes[i-1]["channel"]==4){
+                    else if (notesOn[i-1]["channel"]==4){
                         if (firstNote-secondNote==7) element = {"key":"PC", "time":(lastReceived/1000)};
                         else element = {"key":"other", "time":(lastReceived/1000)};
                     }
@@ -49,7 +49,7 @@ function getPowerChords(){
                 else element = {"key":"undefined", "time":(lastReceived/1000)};
                 break;
             case 4:
-                if ((notes[i-1]["channel"]==5) && deltaTime<=15){
+                if ((notesOn[i-1]["channel"]==5) && deltaTime<=15){
                     if (secondNote-firstNote==7) element = {"key":"PC", "time":(lastReceived/1000)};
                     else element = {"key":"other", "time":(lastReceived/1000)};
                 }
@@ -76,7 +76,7 @@ function getPowerChords(){
 function getBarreChords(){
     var chord = [40,47,52,56,59,64];
     // 20 possible BarreChords
-    var firstTime = notes[0]["receivedTime"];
+    var firstTime = notesOn[0]["receivedTime"];
 
     var sampleSize = randomBetween(10, 15);                          // Sampling between 8-15
     var note, channel;
@@ -85,16 +85,16 @@ function getBarreChords(){
     var barreCounted = 0;
     var barreArray = [];
 
-    if (count+sampleSize<notes.length){
+    if (count+sampleSize<notesOn.length){
         // Start sampling process
-        while (count<notes.length){
-            if (count+sampleSize>=notes.length) break;
-            var timeOfMeasurement = (notes[count]["receivedTime"]-firstTime)/1000;
+        while (count<notesOn.length){
+            if (count+sampleSize>=notesOn.length) break;
+            var timeOfMeasurement = (notesOn[count]["receivedTime"]-firstTime)/1000;
             //console.log("Time of measurement", timeOfMeasurement);
             var samples = [];
             // Save note samples that will be analyzed for barre chords
             for (i=count; i<count+sampleSize; i++){
-                samples.push(notes[i]);
+                samples.push(notesOn[i]);
             }
             // Save the all the delta times between the notes in one array for calculation the average delta time
             var deltaTimes = [];

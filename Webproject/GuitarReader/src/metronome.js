@@ -203,7 +203,7 @@ function startTone( frequency )
     if (preludeCounter==5){
         firstBeat = context.currentTime;
         recordStart = true;
-        console.log("firstBeat", firstBeat);
+        //console.log("firstBeat", firstBeat);
 
     }
     var now = context.currentTime;
@@ -220,7 +220,7 @@ function startTone( frequency )
     amp.gain.linearRampToValueAtTime(0.5, context.currentTime + 0.01);
     amp.gain.linearRampToValueAtTime(0.0, context.currentTime + 0.11);
     //console.log("Date Now", Date.now());
-    console.log("context.currentTime Metronome", context.currentTime);
+    //console.log("context.currentTime Metronome", context.currentTime);
 
 }
 

@@ -1,8 +1,22 @@
-var notes;                                                      // Array with all notes information
-var filteredNotes;                                                       // Array with filtered notes information
-var chords;                                                     // Array with chords information
-var notesCount = 0;                                             // counter for notes-array positions
+
+// Array where all MIDI sessions are saved
+var sessions = [];
+
+// Array with all notes information
+var notesOn;
+var notesOff;
+
+// Array with filtered notes information
+var filteredNotes;
+
+// Array with chords information
+var chords;
+
+// counter for notes-array positions
+var notesOnCount = 0;
 var notesOffCount = 0;
+
+// Statistics about each String
 var stats,
     stats_E,
     stats_A,
@@ -25,20 +39,25 @@ var str;
 var heatmapData;
 var streamGraphData;
 var barChartData;
+var MIDI_notes;
 
 /**
  *
  */
 function recordSession(){
-    notes = new Array();
-    filteredNotes = new Array();
-    notesCount = 0;
-    if (!recording) {
-        var status = d3.select("#status");
+    notesOn = [];
+    notesOff = [];
+    filteredNotes = [];
+    notesOnCount = 0;
+    notesOffCount = 0;
 
+    // Check if Session is already recording
+    if (!recording) {
+
+        // Prepare Status text
+        var status = d3.select("#status");
         status.select("rect").remove();
         status.select("text").remove();
-
         status.append("circle")
             .attr("r", 10)
             .attr("cx", 15)
@@ -48,24 +67,29 @@ function recordSession(){
             .attr("x", 35)
             .attr("y", 14)
             .text("Recording Session");
-
+        // Change button colors in the UI
         var recordButton = d3.select("#record")
             .attr("style", "background-color: #d62728;");
-
         var visButton = d3.select("#visBut")
             .attr("style", "background-color: #1D4C6E;");
 
-
-        // WebMidi saves the played notes into the array "notes"
+        // WebMidi saves the played notes into the array "notesOn"
         WebMidi.enable(function(err){
             if (err) console.log("WebMidi could not be enabled");
             var input = WebMidi.inputs[0];
             input.addListener("noteon", "all", function(e){
                 if (recordStart){
-                    //console.log("NoteOn "+notesCount+":",e);
-                    console.log("context.currentTime Note played", context.currentTime);
-                    notes[notesCount] = e;
-                    notesCount++;
+                    console.log("NoteOn "+notesOnCount+":",e);
+                    notesOn[notesOnCount] = e;
+                    notesOnCount++;
+                }
+
+            });
+            input.addListener("noteoff", "all", function(e){
+                if (recordStart){
+                    console.log("NoteOff "+notesOffCount+":",e);
+                    notesOff[notesOffCount] = e;
+                    notesOffCount++;
                 }
 
             });
@@ -105,12 +129,10 @@ function saveSession(){
             .attr("style", "background-color: #123045;");
 
         // Preparing dataset for csv and line graph
-        var firstTime = 0;
-        for (var i = 0; i < notes.length;i++){
-            if (i==0) firstTime = notes[i]["receivedTime"];
+        for (var i = 0; i < notesOn.length;i++){
             filteredNotes[i] = new Array(5);
             filteredNotes[i][0] = i;                                         // id
-            switch (notes[i]["channel"]) {                          // string-name
+            switch (notesOn[i]["channel"]) {                          // string-name
                 case 6:
                     filteredNotes[i][1] = "E";
                     break;
@@ -134,10 +156,10 @@ function saveSession(){
                     break;
             }
 
-            //filteredNotes[i][1] = notes[i]["channel"];
-            filteredNotes[i][2] = notes[i]["note"]["number"];                        // MIDI-note number
-            filteredNotes[i][3] = ((notes[i]["receivedTime"])/1000)-firstBeat;      // Received Time (in sec)
-            filteredNotes[i][4] = notes[i]["velocity"];                              // Velocity
+            //filteredNotes[i][1] = notesOn[i]["channel"];
+            filteredNotes[i][2] = notesOn[i]["note"]["number"];                        // MIDI-note number
+            filteredNotes[i][3] = ((notesOn[i]["receivedTime"])/1000)-firstBeat;      // Received Time (in sec)
+            filteredNotes[i][4] = notesOn[i]["velocity"];                              // Velocity
 
         }
         str = arrayToCSVString(csvHeader, filteredNotes, sep);                        // converts "filteredNotes" into the CSV-compatible string "str"
@@ -179,15 +201,54 @@ function saveSession(){
         maxString = getMaxString();
         //console.log("streamGraphData", streamGraphData);
 
+        MIDI_notes = prepareMIDIPlayNotes();
+        sessions.push(MIDI_notes);
+
+
+
+        //console.log("notesOn" ,notesOn);
+        //console.log("notesOff", notesOff);
+        //console.log("MIDI_notes", MIDI_notes);
+
+        console.log("sessions", sessions);
+
+
 
         sessionSaved = true;
         recording = false;
 
-        console.log("filtered notes", filteredNotes);
     }
     else {
         window.alert("Record a session first!");
     }
+
+}
+
+/**
+ *
+ * @returns {Array}
+ */
+function prepareMIDIPlayNotes(){
+    var result = [];
+    var count = 0;
+
+    for (var i = 0; i<notesOn.length; i++){
+        for (var j = i; j<notesOff.length; j++){
+            if (notesOff[j]["channel"]==notesOn[i]["channel"]){
+                if (notesOff[j]["note"]["number"]==notesOn[i]["note"]["number"]){
+                    result[count] = new Object(4);
+                    result[count].note = notesOff[j]["note"]["number"];
+                    result[count].velocity = notesOn[i]["velocity"];
+                    result[count].receivedTime = notesOn[i]["receivedTime"];
+                    result[count].duration = (notesOff[j]["receivedTime"]-notesOn[i]["receivedTime"])/1000;
+                    count++;
+                    break;
+                }
+            }
+        }
+    }
+
+    return result;
 
 }
 
@@ -307,8 +368,8 @@ function getMaxString(){
         max_g = 0,
         max_b = 0,
         max_e = 0;
-    for(var i = 0; i<notes.length; i++){
-        switch (notes[i]["channel"]) {
+    for(var i = 0; i<notesOn.length; i++){
+        switch (notesOn[i]["channel"]) {
           case 6:
               max_E++;
               break;
@@ -388,9 +449,9 @@ function createStats(arr, note){
  */
 function countNoteOnFret(note, string){
     var count = 0;
-    for (var i = 0; i<notes.length; i++){
+    for (var i = 0; i<notesOn.length; i++){
 
-        if (notes[i]["channel"]==string && notes[i]["note"]["number"] == note) {
+        if (notesOn[i]["channel"]==string && notesOn[i]["note"]["number"] == note) {
             count++;
         }
     }
@@ -415,10 +476,7 @@ function getIndexOfTime(arr, t){
 /**
  *
  * TODO: Interaction between graphs/vis (Hover over, Focus, ...)
- * TODO: Implement Metronome
  * TODO: Comparism Vis between sessions
  *
- * TODO: Funk-Chords Array (nice to have)
- * TODO: Open-Chords Array (not essential for presentation)
  *
  */

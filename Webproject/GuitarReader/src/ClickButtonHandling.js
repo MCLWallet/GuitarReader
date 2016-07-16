@@ -22,10 +22,13 @@ function vis(){
         var visButton = d3.select("#visBut")
             .attr("style", "background-color: #123045;");
 
+        /*
         visLineGraph();
         heatmapVis();
         streamGraphVis();
         barChartVis();
+        */
+        //scatterplot();
         visRequested = true;
 
     }
