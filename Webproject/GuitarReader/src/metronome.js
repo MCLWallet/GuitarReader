@@ -192,9 +192,13 @@ function initAudio()
     }
 }
 
+// counts the prelude beats
 var preludeCounter = 0;
-var firstBeat = 0;                          // time when the first metronome hit came
-var recordStart = false;
+
+// time when the first metronome hit came
+var firstBeat = 0;
+// Boolean variable indicating if the prelude is over or nor
+var preludeOver = false;
 
 // Set the frequency of the oscillator and start it running.
 function startTone( frequency )
@@ -202,9 +206,7 @@ function startTone( frequency )
     preludeCounter++;
     if (preludeCounter==5){
         firstBeat = context.currentTime;
-        recordStart = true;
-        //console.log("firstBeat", firstBeat);
-
+        preludeOver = true;
     }
     var now = context.currentTime;
 

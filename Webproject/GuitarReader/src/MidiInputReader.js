@@ -78,7 +78,7 @@ function recordSession(){
             if (err) console.log("WebMidi could not be enabled");
             var input = WebMidi.inputs[0];
             input.addListener("noteon", "all", function(e){
-                if (recordStart){
+                if (preludeOver){
                     console.log("NoteOn "+notesOnCount+":",e);
                     notesOn[notesOnCount] = e;
                     notesOnCount++;
@@ -86,7 +86,7 @@ function recordSession(){
 
             });
             input.addListener("noteoff", "all", function(e){
-                if (recordStart){
+                if (preludeOver){
                     console.log("NoteOff "+notesOffCount+":",e);
                     notesOff[notesOffCount] = e;
                     notesOffCount++;
@@ -212,10 +212,16 @@ function saveSession(){
 
         console.log("sessions", sessions);
 
+        var scatterplotData = prepareScatterplotData();
+
+        console.log("scatterplotData", scatterplotData);
+
 
 
         sessionSaved = true;
         recording = false;
+        preludeOver = false;
+        preludeCounter = 0;
 
     }
     else {
@@ -232,15 +238,20 @@ function prepareMIDIPlayNotes(){
     var result = [];
     var count = 0;
 
+    var beatsPerSecond = bpm/60;
+    var beatDuration = 1/beatsPerSecond;
+    var timeDuration = beatDuration*4;
+
     for (var i = 0; i<notesOn.length; i++){
         for (var j = i; j<notesOff.length; j++){
             if (notesOff[j]["channel"]==notesOn[i]["channel"]){
                 if (notesOff[j]["note"]["number"]==notesOn[i]["note"]["number"]){
-                    result[count] = new Object(4);
+                    result[count] = new Object(5);
                     result[count].note = notesOff[j]["note"]["number"];
                     result[count].velocity = notesOn[i]["velocity"];
-                    result[count].receivedTime = notesOn[i]["receivedTime"];
+                    result[count].receivedTime = (notesOn[i]["receivedTime"]/1000)-firstBeat;
                     result[count].duration = (notesOff[j]["receivedTime"]-notesOn[i]["receivedTime"])/1000;
+                    result[count].time = Math.floor(result[count].receivedTime/timeDuration)+1;
                     count++;
                     break;
                 }
