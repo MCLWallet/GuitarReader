@@ -242,6 +242,8 @@ function prepareMIDIPlayNotes(){
     var beatDuration = 1/beatsPerSecond;
     var timeDuration = beatDuration*4;
 
+    console.log("timeDuration", timeDuration);
+
     for (var i = 0; i<notesOn.length; i++){
         for (var j = i; j<notesOff.length; j++){
             if (notesOff[j]["channel"]==notesOn[i]["channel"]){

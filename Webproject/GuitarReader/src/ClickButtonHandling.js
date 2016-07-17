@@ -28,7 +28,7 @@ function vis(){
         streamGraphVis();
         barChartVis();
         */
-        //scatterplot();
+        scatterplot();
         visRequested = true;
 
     }
