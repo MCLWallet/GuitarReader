@@ -20,14 +20,14 @@
     <favorites_list name="GuitarReader" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5716878">
+    <splitter split-orientation="horizontal" split-proportion="0.54162276">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="SessionViewer.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/SessionViewer.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7809829">
-                  <caret line="43" column="8" selection-start-line="43" selection-start-column="8" selection-end-line="43" selection-end-column="8" />
+                <state vertical-scroll-proportion="0.39957264">
+                  <caret line="30" column="39" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
                   <folding />
                 </state>
               </provider>
@@ -73,23 +73,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="LineGraphVis.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/LineGraphVis.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="60" column="20" selection-start-line="60" selection-start-column="20" selection-end-line="60" selection-end-column="20" />
-                  <folding>
-                    <marker date="1467072301000" expanded="true" signature="191:1041" placeholder="{...}" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="MidiInputReader.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/MidiInputReader.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="65" column="29" selection-start-line="65" selection-start-column="29" selection-end-line="65" selection-end-column="29" />
+                  <caret line="67" column="29" selection-start-line="67" selection-start-column="29" selection-end-line="67" selection-end-column="29" />
                   <folding />
                 </state>
               </provider>
@@ -112,8 +100,8 @@
           <file leaf-file-name="MidiInputReader.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/MidiInputReader.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="1.4166666">
-                  <caret line="255" column="51" selection-start-line="255" selection-start-column="51" selection-end-line="255" selection-end-column="51" />
+                <state vertical-scroll-proportion="0.5277778">
+                  <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -125,6 +113,18 @@
                 <state vertical-scroll-proportion="-30.25">
                   <caret line="60" column="17" selection-start-line="60" selection-start-column="17" selection-end-line="60" selection-end-column="17" />
                   <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LineGraphVis.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/LineGraphVis.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="55" column="23" selection-start-line="55" selection-start-column="23" selection-end-line="55" selection-end-column="23" />
+                  <folding>
+                    <marker date="1467072301000" expanded="true" signature="191:1041" placeholder="{...}" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -161,9 +161,9 @@
         <option value="$PROJECT_DIR$/styles/metronome.css" />
         <option value="$PROJECT_DIR$/src/ChordsAggregator.js" />
         <option value="$PROJECT_DIR$/src/metronome.js" />
-        <option value="$PROJECT_DIR$/src/MidiInputReader.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/ClickButtonHandling.js" />
+        <option value="$PROJECT_DIR$/src/MidiInputReader.js" />
         <option value="$PROJECT_DIR$/src/SessionViewer.js" />
       </list>
     </option>
@@ -348,7 +348,7 @@
     <frame x="-252" y="-1057" width="1920" height="1057" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12908325" sideWeight="0.49459043" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.11485775" sideWeight="0.49459043" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19170985" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -684,16 +684,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/LineGraphVis.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="60" column="20" selection-start-line="60" selection-start-column="20" selection-end-line="60" selection-end-column="20" />
-          <folding>
-            <marker date="1467072301000" expanded="true" signature="191:1041" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/StreamGraphVis.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6602564">
@@ -742,18 +732,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/LineGraphVis.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="55" column="23" selection-start-line="55" selection-start-column="23" selection-end-line="55" selection-end-column="23" />
+          <folding>
+            <marker date="1467072301000" expanded="true" signature="191:1041" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/MidiInputReader.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="65" column="29" selection-start-line="65" selection-start-column="29" selection-end-line="65" selection-end-column="29" />
+          <caret line="67" column="29" selection-start-line="67" selection-start-column="29" selection-end-line="67" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/SessionViewer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7809829">
-          <caret line="43" column="8" selection-start-line="43" selection-start-column="8" selection-end-line="43" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.39957264">
+          <caret line="30" column="39" selection-start-line="30" selection-start-column="39" selection-end-line="30" selection-end-column="39" />
           <folding />
         </state>
       </provider>

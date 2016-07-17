@@ -41,6 +41,8 @@ var streamGraphData;
 var barChartData;
 var MIDI_notes;
 
+var scatterplotData;
+
 /**
  *
  */
@@ -212,7 +214,7 @@ function saveSession(){
 
         console.log("sessions", sessions);
 
-        var scatterplotData = prepareScatterplotData();
+        scatterplotData = prepareScatterplotData();
 
         console.log("scatterplotData", scatterplotData);
 

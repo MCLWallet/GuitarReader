@@ -21,39 +21,40 @@ function scatterplot(){
         .attr("height", height);
 
     var x = d3.scale.linear().domain([1, maxTime]).range([margins.left, width-margins.right]),
-        y = d3.scale.linear().domain([1, sessions.length+1]).range([margins.top, height-margins.bottom]);
+        y = d3.scale.linear().domain([1, sessions.length]).range([margins.top, height-margins.bottom*2]);
 
     var xAxis = d3.svg.axis().scale(x).orient("bottom")
-        .ticks(maxTime)
-        .tickFormat(function(d){
-            return d.time;
-        }),
+            .ticks(maxTime)
+            .tickFormat(d3.format("d")),
         yAxis = d3.svg.axis().scale(y).orient("left")
             .ticks(sessions.length)
-            .tickFormat(function(d, i){
-                return "Session "+ d.session_ID;
-            });
+            .tickFormat(d3.format("d"));
 
-    svg.data(sessions).enter()
-        .append("g")
+    svg.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0, "+(height-margins.bottom)+")")
         .call(xAxis);
 
-    svg.data(sessions).enter()
-        .append("g")
+    svg.append("g")
         .attr("class", "axis")
-        .attr("transform", "translate("+(margins.left)+", 0)")
+        .attr("transform", "translate("+(margins.left-margins.right)+", 0)")
         .call(yAxis);
 
+    var r = d3.scale.linear()
+        .domain([0,d3.max(scatterplotData, function (d){
+            return d.amount;
+        })])
+        .range([0,12]);
 
+    svg.selectAll("circle")
+        .data(scatterplotData).enter()
+        .append("circle")
+        .attr("class", "circle")
+        .attr("cx", function(d){ return x(d.time);})
+        .attr("cy", function(d){ return y(d.session_ID);})
+        .attr("r", function(d){ return r(d.amount);})
 
 }
-
-
-
-
-
 
 
 
@@ -64,14 +65,11 @@ function scatterplot(){
  */
 function prepareScatterplotData(){
     var result = [];
-
     var count = 0;
     for (var i = 0; i < sessions.length; i++){
         var timeCounter = 1;
         var noteCounter = 0;
-        var lastTime = sessions[i][sessions[i].length-1].time;
         for (var j = 0; j < sessions[i].length; j++){
-            console.log("j", j);
             if (sessions[i][j].time==timeCounter){
                 noteCounter++;
             }
@@ -85,8 +83,6 @@ function prepareScatterplotData(){
                 count++;
             }
             if (j==sessions[i].length-1){
-                console.log("Hallo");
-
                 result[count] = new Object(3);
                 result[count].session_ID = i+1;
                 result[count].time = timeCounter;
@@ -96,6 +92,22 @@ function prepareScatterplotData(){
             }
 
         }
+    }
+
+    // Check if there are sessions that were shorter than the longest session and append their datasets
+    for (var k = 0; k < sessions.length; k++){
+        var lastTime = sessions[k][sessions[k].length-1].time;
+        if (maxTime>lastTime){
+            while (lastTime<=maxTime){
+                lastTime++;
+                result[count] = new Object(3);
+                result[count].session_ID = k+1;
+                result[count].time = lastTime;
+                result[count].amount = 0;
+                count++;
+            }
+        }
+
     }
 
 
