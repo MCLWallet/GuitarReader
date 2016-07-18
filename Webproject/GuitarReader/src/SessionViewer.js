@@ -22,14 +22,14 @@ function scatterplot(){
         .attr("width", width)
         .attr("height", height);
 
-    var x = d3.scale.linear().domain([1, maxTime]).range([margins.left, width-margins.right]),
-        y = d3.scale.linear().domain([1, sessions.length]).range([margins.top, height-margins.bottom*2]);
+    var x = d3.scale.linear().domain([0, longestSession()+1]).range([margins.left, width-margins.right]),
+        y = d3.scale.linear().domain([1, numSessions]).range([margins.top, height-margins.bottom*2]);
 
     var xAxis = d3.svg.axis().scale(x).orient("bottom")
-            .ticks(maxTime)
-            .tickFormat(d3.format("d")),
+            .ticks(longestSession()),
+            //.tickFormat(d3.format("d")),
         yAxis = d3.svg.axis().scale(y).orient("left")
-            .ticks(sessions.length)
+            .ticks(numSessions)
             .tickFormat(d3.format("d"));
 
     svg.append("g")
@@ -43,36 +43,36 @@ function scatterplot(){
         .call(yAxis);
 
     var r = d3.scale.linear()
-        .domain([0,d3.max(scatterplotData, function (d){
-            return d.amount;
-        })])
+        .domain([0,1])
         .range([0,12]);
 
     svg.selectAll("circle")
-        .data(scatterplotData).enter()
+        .data(sessions).enter()
         .append("circle")
         .attr("class", "circle")
-        .attr("cx", function(d){ return x(d.time);})
+        .attr("cx", function(d){ return x(d.receivedTime);})
         .attr("cy", function(d){ return y(d.session_ID);})
-        .attr("r", function(d){ return r(d.amount);})
-        .attr("fill", function(d){
-            switch(d.quality){
-                case 0:
-                    return "black";
-                case 1:
-                    return "red";
-                case 2:
-                    return "yellow";
-                case 3:
-                    return "green";
-                default:
-                    return "black";
-            }
-        })
+        .attr("r", function(d){ return r(d.velocity);});
+
+    // TODO: improve scatterplot design (grids, lines, zoom in, interaction, etc)
+    // TODO: tick in times not seconds
+    // TODO: MIDI player
+    // TODO: color coding => duration ???
+
 
 }
 
-
+/**
+ * Return the duration of the longest session
+ * @returns {number} duration of the longest session
+ */
+function longestSession(){
+    var result = 0;
+    for (var i = 0; i < sessions.length; i++){
+        if (result<sessions[i].receivedTime) result = sessions[i].receivedTime;
+    }
+    return result;
+}
 
 
 /**
@@ -127,13 +127,13 @@ function prepareScatterplotData(){
         }
 
     }
-    compareSessions();
+    //compareSessions();
     return result;
 }
-
 /**
  * Compares the recorded sessions with the ground truth and changes the quality parameter
  */
+/*
 function compareSessions(){
 
     for (var i = 0; i < sessions.length; i++){
@@ -185,3 +185,4 @@ function compareSessions(){
 
     }
 }
+*/

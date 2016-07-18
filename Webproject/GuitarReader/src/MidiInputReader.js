@@ -43,6 +43,9 @@ var MIDI_notes;
 
 var scatterplotData;
 
+// Number of sessions played
+var numSessions = 0;
+
 /**
  *
  */
@@ -204,7 +207,8 @@ function saveSession(){
         //console.log("streamGraphData", streamGraphData);
 
         MIDI_notes = prepareMIDIPlayNotes();
-        sessions.push(MIDI_notes);
+        var temp = sessions;
+        sessions = temp.concat(MIDI_notes);
 
 
 
@@ -214,15 +218,16 @@ function saveSession(){
 
         console.log("sessions", sessions);
 
-        scatterplotData = prepareScatterplotData();
+        //scatterplotData = prepareScatterplotData();
 
-        console.log("scatterplotData", scatterplotData);
+        //console.log("scatterplotData", scatterplotData);
 
 
 
         sessionSaved = true;
         recording = false;
         preludeOver = false;
+        numSessions++;
         preludeCounter = 0;
 
     }
@@ -233,8 +238,8 @@ function saveSession(){
 }
 
 /**
- *
- * @returns {Array}
+ * Prepares the sessions dataset
+ * @returns {Array} sessions
  */
 function prepareMIDIPlayNotes(){
     var result = [];
@@ -250,7 +255,8 @@ function prepareMIDIPlayNotes(){
         for (var j = i; j<notesOff.length; j++){
             if (notesOff[j]["channel"]==notesOn[i]["channel"]){
                 if (notesOff[j]["note"]["number"]==notesOn[i]["note"]["number"]){
-                    result[count] = new Object(5);
+                    result[count] = new Object(6);
+                    result[count].session_ID = numSessions+1;
                     result[count].note = notesOff[j]["note"]["number"];
                     result[count].velocity = notesOn[i]["velocity"];
                     result[count].receivedTime = (notesOn[i]["receivedTime"]/1000)-firstBeat;
