@@ -1,8 +1,9 @@
+
+
 // Starts the live guitar session
 function record(){
     startMetronome();
     recordSession();
-    console.log("bpm", bpm);
 }
 
 // Saves the session data into the array "filteredNotes"

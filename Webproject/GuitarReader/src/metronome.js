@@ -203,13 +203,8 @@ var preludeOver = false;
 // Set the frequency of the oscillator and start it running.
 function startTone( frequency )
 {
-    preludeCounter++;
-    if (preludeCounter==5){
-        firstBeat = context.currentTime;
-        preludeOver = true;
-    }
-    var now = context.currentTime;
 
+    var now = context.currentTime;
 
     oscillator.frequency.setValueAtTime(frequency, now);
 
@@ -234,12 +229,41 @@ var $x = 1000;
 var $newbpm = 60;
 var $t;
 var bpm = document.getElementById("bpm").value;
+var beatCounter = 1;
+var timeCounter = 1;
 
 function beep() {
-    startTone(200);
+
+    if (beatCounter==4) {
+        startTone(200);
+        beatCounter=1;
+    }
+    else if (beatCounter==1){
+        startTone(400);
+        console.log ("FirstBeat", context.currentTime);
+
+        beatCounter++;
+
+    }
+    else{
+        startTone(200);
+        beatCounter++;
+    }
+
+    preludeCounter++;
+    if (preludeCounter==5){
+        preludeOver = true;
+        firstBeat = context.currentTime;
+        //console.log("contextTime", context.currentTime);
+        //console.log("Date.now()", Date.now());
+
+    }
+// TODO: Fix metronome bug
 }
 
+
 function startMetronome(){
+    console.log("time Metronome starts", context.currentTime);
     clearInterval($t);
     bpm = document.getElementById("bpm").value;
     $newbpm = 1000/(Math.round($('input').val()/60));

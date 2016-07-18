@@ -3,7 +3,10 @@ var numVis = 1;                                             // amount of request
 var visRequested = false;
 
 
-// Starts the visualization (line graph)
+/**
+ * Initiates the Line Graph view
+ * analyzed dataset: filteredNotes
+ */
 function visLineGraph(){
     var width = 700,
         height = 460,
@@ -16,7 +19,7 @@ function visLineGraph(){
     var stringNames = ["E (6th String)", "A (5th String)", "d (4th String)",
         "g (3th String)", "b (2th String)", "e (1th String)"];
     var colorLegend = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"];
-    var colorLegend2 = ["#004490", "#0374B3", "#0EB1D6", "#078AC2", "#76DBEC", "#60B1D9"];
+    //var colorLegend2 = ["#004490", "#0374B3", "#0EB1D6", "#078AC2", "#76DBEC", "#60B1D9"];
 
     var ordinal = d3.scale.ordinal()
         .domain(stringNames)
@@ -56,6 +59,7 @@ function visLineGraph(){
         .attr("transform", "translate("+(margins.left)+",0)")
         .call(yAxis);
 
+    // axis descriptions
     svg.append("text")
         .attr("x", 40-height/2)
         .attr("y", 8)
@@ -64,7 +68,6 @@ function visLineGraph(){
         .style("text-anchor", "end")
         .style("font-weight", "bold")
         .text("times played");
-
     svg.append("text")
         .attr("x", (width/2)+50)
         .attr("y", height+10)
@@ -73,12 +76,11 @@ function visLineGraph(){
         .style("font-weight", "bold")
         .text("time (in sec)");
 
+    // adding lines
     var line = d3.svg.line()
         .x(function(d){ return xScale(d.time);})
         .y(function(d){ return yScale(d.played);})
         .interpolate("basis");
-
-
     for (var j = 0; j<6; j++){
         svg.append("path")
             .attr("id", stringNames[j])
@@ -88,6 +90,7 @@ function visLineGraph(){
             .attr("fill", "none");
     }
 
+    // vis headline
     svg.append("text")
         .attr("x", 50)
         .attr("y", 30)
@@ -103,24 +106,21 @@ function visLineGraph(){
         .attr("style", "stroke:rgb(0,0,0);stroke-width:1");
 
 
+    // adding color legend
     var legend = svg.append("g");
-
     legend.append("rect")
         .attr("width", 120)
         .attr("height", 140)
         .attr("transform", "translate(70,60)")
         .attr("fill", "white")
         .attr("stroke", "black");
-
     svg.append("g")
         .attr("class", "legendOrdinal")
         .attr("transform", "translate(85,75)");
-
     var legendOrdinal = d3.legend.color()
         .shape("path", d3.svg.symbol().type("triangle-up").size(60)())
         .shapePadding(10)
         .scale(ordinal);
-
     svg.select(".legendOrdinal")
         .call(legendOrdinal);
 

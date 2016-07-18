@@ -46,6 +46,8 @@ var scatterplotData;
 // Number of sessions played
 var numSessions = 0;
 
+var sessionBeginning = false;
+
 /**
  *
  */
@@ -80,20 +82,25 @@ function recordSession(){
 
         // WebMidi saves the played notes into the array "notesOn"
         WebMidi.enable(function(err){
+            console.log("time WebMIDI started", context.currentTime);
             if (err) console.log("WebMidi could not be enabled");
             var input = WebMidi.inputs[0];
+
             input.addListener("noteon", "all", function(e){
                 if (preludeOver){
-                    console.log("NoteOn "+notesOnCount+":",e);
-                    notesOn[notesOnCount] = e;
+                    console.log("receivedTime", context.currentTime);
+                    notesOn[notesOnCount] = new Object(2);
+                    notesOn[notesOnCount].rawData = e;
+                    notesOn[notesOnCount].timecode = context.currentTime;
                     notesOnCount++;
                 }
 
             });
             input.addListener("noteoff", "all", function(e){
                 if (preludeOver){
-                    console.log("NoteOff "+notesOffCount+":",e);
-                    notesOff[notesOffCount] = e;
+                    notesOff[notesOffCount] = new Object(2);
+                    notesOff[notesOffCount].rawData = e;
+                    notesOff[notesOffCount].timecode = context.currentTime;
                     notesOffCount++;
                 }
 
@@ -137,7 +144,7 @@ function saveSession(){
         for (var i = 0; i < notesOn.length;i++){
             filteredNotes[i] = new Array(5);
             filteredNotes[i][0] = i;                                         // id
-            switch (notesOn[i]["channel"]) {                          // string-name
+            switch (notesOn[i]["rawData"]["channel"]) {                          // string-name
                 case 6:
                     filteredNotes[i][1] = "E";
                     break;
@@ -162,9 +169,9 @@ function saveSession(){
             }
 
             //filteredNotes[i][1] = notesOn[i]["channel"];
-            filteredNotes[i][2] = notesOn[i]["note"]["number"];                        // MIDI-note number
-            filteredNotes[i][3] = ((notesOn[i]["receivedTime"])/1000)-firstBeat;      // Received Time (in sec)
-            filteredNotes[i][4] = notesOn[i]["velocity"];                              // Velocity
+            filteredNotes[i][2] = notesOn[i]["rawData"]["note"]["number"];                        // MIDI-note number
+            filteredNotes[i][3] = ((notesOn[i]["rawData"]["receivedTime"])/1000)-firstBeat;      // Received Time (in sec)
+            filteredNotes[i][4] = notesOn[i]["rawData"]["velocity"];                              // Velocity
 
         }
         str = arrayToCSVString(csvHeader, filteredNotes, sep);                        // converts "filteredNotes" into the CSV-compatible string "str"
@@ -200,28 +207,17 @@ function saveSession(){
 
         }
 
+        /*
         chords = aggregateChords();
         streamGraphData = prepareStreamGraphData(chords);
         barChartData = prepareBarChartData(chords);
+        */
         maxString = getMaxString();
-        //console.log("streamGraphData", streamGraphData);
 
         MIDI_notes = prepareMIDIPlayNotes();
         var temp = sessions;
         sessions = temp.concat(MIDI_notes);
-
-
-
-        //console.log("notesOn" ,notesOn);
-        //console.log("notesOff", notesOff);
-        //console.log("MIDI_notes", MIDI_notes);
-
         console.log("sessions", sessions);
-
-        //scatterplotData = prepareScatterplotData();
-
-        //console.log("scatterplotData", scatterplotData);
-
 
 
         sessionSaved = true;
@@ -253,15 +249,15 @@ function prepareMIDIPlayNotes(){
 
     for (var i = 0; i<notesOn.length; i++){
         for (var j = i; j<notesOff.length; j++){
-            if (notesOff[j]["channel"]==notesOn[i]["channel"]){
-                if (notesOff[j]["note"]["number"]==notesOn[i]["note"]["number"]){
+            if (notesOff[j]["rawData"]["channel"]==notesOn[i]["rawData"]["channel"]){
+                if (notesOff[j]["rawData"]["note"]["number"]==notesOn[i]["rawData"]["note"]["number"]){
                     result[count] = new Object(6);
                     result[count].session_ID = numSessions+1;
-                    result[count].note = notesOff[j]["note"]["number"];
-                    result[count].velocity = notesOn[i]["velocity"];
-                    result[count].receivedTime = (notesOn[i]["receivedTime"]/1000)-firstBeat;
-                    result[count].duration = (notesOff[j]["receivedTime"]-notesOn[i]["receivedTime"])/1000;
-                    result[count].time = Math.floor(result[count].receivedTime/timeDuration)+1;
+                    result[count].note = notesOff[j]["rawData"]["note"]["number"];
+                    result[count].velocity = notesOn[i]["rawData"]["velocity"];
+                    result[count].receivedTime = notesOn[i]["timecode"]-firstBeat;
+                    result[count].duration = notesOff[j]["timecode"]-notesOn[i]["timecode"];
+                    result[count].time = ((result[count].receivedTime)/timeDuration)+1;
                     count++;
                     break;
                 }
@@ -390,7 +386,7 @@ function getMaxString(){
         max_b = 0,
         max_e = 0;
     for(var i = 0; i<notesOn.length; i++){
-        switch (notesOn[i]["channel"]) {
+        switch (notesOn[i]["rawData"]["channel"]) {
           case 6:
               max_E++;
               break;
@@ -472,7 +468,7 @@ function countNoteOnFret(note, string){
     var count = 0;
     for (var i = 0; i<notesOn.length; i++){
 
-        if (notesOn[i]["channel"]==string && notesOn[i]["note"]["number"] == note) {
+        if (notesOn[i]["rawData"]["channel"]==string && notesOn[i]["rawData"]["note"]["number"] == note) {
             count++;
         }
     }

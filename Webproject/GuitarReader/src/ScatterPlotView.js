@@ -6,6 +6,7 @@ var groundTruth = 0;
 
 /**
  * Inititates the Scatterplot View
+ * analyzed dataset: sessions
  */
 function scatterplot(){
     var width = 940,
@@ -17,59 +18,107 @@ function scatterplot(){
             left: 100
         };
 
-    var svg = d3.select("#scatterplot")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-    var x = d3.scale.linear().domain([0, longestSession()+1]).range([margins.left, width-margins.right]),
+    var x = d3.scale.linear().domain([1, maxTimeInSessions()]).range([margins.left, width-margins.right]),
         y = d3.scale.linear().domain([1, numSessions]).range([margins.top, height-margins.bottom*2]);
 
     var xAxis = d3.svg.axis().scale(x).orient("bottom")
-            .ticks(longestSession()),
-            //.tickFormat(d3.format("d")),
+            .ticks(maxTimeInSessions())
+            .innerTickSize(-height+margins.top+margins.bottom)
+            .outerTickSize(0)
+            .tickPadding(10)
+            .tickFormat(d3.format("d")),
         yAxis = d3.svg.axis().scale(y).orient("left")
             .ticks(numSessions)
             .tickFormat(d3.format("d"));
 
+    var zoomBeh = d3.behavior.zoom()
+        .x(x)
+        .y(y)
+        .scaleExtent([0, 500])
+        .on("zoom", zoom);
+
+    var svg = d3.select("#scatterplot")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .call(zoomBeh);
+
+
+
+    // adding axes
     svg.append("g")
-        .attr("class", "axis")
+        .attr("class", "xAxis")
         .attr("transform", "translate(0, "+(height-margins.bottom)+")")
         .call(xAxis);
 
     svg.append("g")
-        .attr("class", "axis")
+        .attr("class", "yAxis")
         .attr("transform", "translate("+(margins.left-margins.right)+", 0)")
         .call(yAxis);
 
+
+
     var r = d3.scale.linear()
-        .domain([0,1])
-        .range([0,12]);
+        .domain([0,5])
+        .range([5,10]);
 
     svg.selectAll("circle")
         .data(sessions).enter()
         .append("circle")
         .attr("class", "circle")
-        .attr("cx", function(d){ return x(d.receivedTime);})
+        .attr("cx", function(d){ return x(d.time);})
         .attr("cy", function(d){ return y(d.session_ID);})
-        .attr("r", function(d){ return r(d.velocity);});
+        .attr("r", function(d){ return r(d.duration);})
+        .attr("fill", function(d){
+            if (d.velocity<0.33) return "#7FA504";
+            else if (d.velocity >= 0.33 && d.velocity < 0.66) return "#F2CE29";
+            else if (d.velocity >= 0.66 && d.velocity < 1.0) return "#F48809";
+            else if (d.velocity == 1.0) return "#D62B03";
+            else return "black";
+        });
 
     // TODO: improve scatterplot design (grids, lines, zoom in, interaction, etc)
     // TODO: tick in times not seconds
     // TODO: MIDI player
     // TODO: color coding => duration ???
 
+    function zoom(){
+        svg.select(".xAxis").call(xAxis);
+        svg.select(".yAxis").call(yAxis);
+
+        svg.selectAll(".circle")
+            .attr("transform", transform);
+    }
+
+    function transform(d) {
+        return "translate(" + x(d.time) + "," + y(d.session_ID) + ")";
+    }
+
 
 }
 
+
+
 /**
- * Return the duration of the longest session
+ * Returns the duration of the longest session
  * @returns {number} duration of the longest session
  */
 function longestSession(){
     var result = 0;
     for (var i = 0; i < sessions.length; i++){
         if (result<sessions[i].receivedTime) result = sessions[i].receivedTime;
+    }
+    return result;
+}
+
+/**
+ * Returns the maximum time a session had
+ * @returns {number} max Time
+ */
+function maxTimeInSessions(){
+    var result = 0;
+    for (var i = 0; i < sessions.length; i++){
+        if (result<sessions[i].time) result = sessions[i].time;
     }
     return result;
 }
@@ -130,59 +179,3 @@ function prepareScatterplotData(){
     //compareSessions();
     return result;
 }
-/**
- * Compares the recorded sessions with the ground truth and changes the quality parameter
- */
-/*
-function compareSessions(){
-
-    for (var i = 0; i < sessions.length; i++){
-        if (i==groundTruth) continue;
-        var currentTime = 1;
-
-        var rhythmQuality = 0;
-        var melodyQuality = 0;
-        var noteCounter = 0;
-        for (var j = 0; j < sessions[i].length; j++){
-            // Is the note on time (+/- 0.03 sec tolerance) ?
-            if (sessions[i][j].receivedTime<=sessions[groundTruth][j].receivedTime+0.03
-                || sessions[i][j].receivedTime>=sessions[groundTruth][j].receivedTime-0.03){
-                rhythmQuality++;
-            }
-            else rhythmQuality--;
-            // Is it the right note? TODO: Watch out for chords!
-            if (sessions[i][j].note==sessions[groundTruth][j].note) melodyQuality++;
-            else melodyQuality--;
-            // Do you play the note long enough?
-            if (sessions[i][j].duration<=sessions[groundTruth][j].duration+0.02
-                || sessions[i][j].duration>=sessions[groundTruth][j].duration-0.02) {
-                rhythmQuality++;
-            }
-            else rhythmQuality--;
-            noteCounter++;
-
-            if (j+1 != sessions[i].length && sessions[i][j+1].time == currentTime+1){
-                // Calculate the quality of the time (ratio points/amount of notes)
-                var quality = (rhythmQuality+melodyQuality)/noteCounter;
-                console.log("quality", quality);
-                var scatterQuality;
-                if (quality>=1) scatterQuality = 3;                         // perfect
-                if (quality>=0.3 && quality<1) scatterQuality = 2;          // OK
-                if (quality<0.3) scatterQuality = 1;                        // terrible
-                for (var k = 0; k < scatterplotData.length; k++){
-                    if (scatterplotData[k].session_ID==i+1){
-                        if (scatterplotData[k].time==currentTime) scatterplotData[k].quality = scatterQuality;
-                    }
-                }
-                // setting back help variables for next iteration
-                rhythmQuality = 0;
-                melodyQuality = 0;
-                noteCounter = 0;
-                currentTime++;
-            }
-
-        }
-
-    }
-}
-*/
