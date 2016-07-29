@@ -39,7 +39,6 @@ var str;
 var heatmapData;
 var streamGraphData;
 var barChartData;
-var MIDI_notes;
 
 var scatterplotData;
 
@@ -82,13 +81,11 @@ function recordSession(){
 
         // WebMidi saves the played notes into the array "notesOn"
         WebMidi.enable(function(err){
-            console.log("time WebMIDI started", context.currentTime);
             if (err) console.log("WebMidi could not be enabled");
             var input = WebMidi.inputs[0];
 
             input.addListener("noteon", "all", function(e){
                 if (preludeOver){
-                    console.log("receivedTime", context.currentTime);
                     notesOn[notesOnCount] = new Object(2);
                     notesOn[notesOnCount].rawData = e;
                     notesOn[notesOnCount].timecode = context.currentTime;
@@ -184,28 +181,7 @@ function saveSession(){
         stats = new Array(stats_E, stats_A, stats_d, stats_g, stats_b, stats_e);
 
 
-        // preparing the heatmap dataset
-        heatmapData = new Array(132);
-        var noteIterate = 64,               // starting with high e ...
-            stringIterate = 1,              // ... on the high e-string
-            fretIterate = 0;
-        for (var j = 0; j<132; j++){
-            heatmapData[j] = new Object();
-            heatmapData[j].string = stringIterate;
-            heatmapData[j].fret = fretIterate;
-            heatmapData[j].amount = countNoteOnFret(noteIterate, stringIterate);
-            if (fretIterate==21){
-                fretIterate = 0;
-                if (stringIterate==2) noteIterate -= 25;
-                else noteIterate -= 26;
-                stringIterate++;
-            }
-            else{
-                fretIterate++;
-                noteIterate++;
-            }
 
-        }
 
         /*
         chords = aggregateChords();
@@ -213,10 +189,11 @@ function saveSession(){
         barChartData = prepareBarChartData(chords);
         */
         maxString = getMaxString();
-
-        MIDI_notes = prepareMIDIPlayNotes();
+        scatterplotData = prepareScatterplotData();
         var temp = sessions;
-        sessions = temp.concat(MIDI_notes);
+        sessions = temp.concat(scatterplotData);
+        heatmapData = prepareHeatmapData();
+
         console.log("sessions", sessions);
 
 
@@ -234,10 +211,39 @@ function saveSession(){
 }
 
 /**
+ * Prepares the heatmap data
+ * @returns {Array} heatmapData
+ */
+function prepareHeatmapData(){
+    var result = new Array(132);
+    var noteIterate = 64,               // starting with high e ...
+        stringIterate = 1,              // ... on the high e-string
+        fretIterate = 0;
+    for (var j = 0; j<132; j++){
+        result[j] = new Object(4);
+        result[j].string = stringIterate;
+        result[j].fret = fretIterate;
+        result[j].amount = countNoteOnFret(noteIterate, stringIterate);
+        result[j].noteNumber = noteIterate;
+        if (fretIterate==21){
+            fretIterate = 0;
+            if (stringIterate==2) noteIterate -= 25;
+            else noteIterate -= 26;
+            stringIterate++;
+        }
+        else{
+            fretIterate++;
+            noteIterate++;
+        }
+    }
+    return result;
+}
+
+/**
  * Prepares the sessions dataset
  * @returns {Array} sessions
  */
-function prepareMIDIPlayNotes(){
+function prepareScatterplotData(){
     var result = [];
     var count = 0;
 
@@ -251,13 +257,15 @@ function prepareMIDIPlayNotes(){
         for (var j = i; j<notesOff.length; j++){
             if (notesOff[j]["rawData"]["channel"]==notesOn[i]["rawData"]["channel"]){
                 if (notesOff[j]["rawData"]["note"]["number"]==notesOn[i]["rawData"]["note"]["number"]){
-                    result[count] = new Object(6);
+                    result[count] = new Object(8);
                     result[count].session_ID = numSessions+1;
-                    result[count].note = notesOff[j]["rawData"]["note"]["number"];
+                    result[count].noteNumber = notesOff[j]["rawData"]["note"]["number"];
+                    result[count].note = notesOff[j]["rawData"]["note"]["name"];
                     result[count].velocity = notesOn[i]["rawData"]["velocity"];
                     result[count].receivedTime = notesOn[i]["timecode"]-firstBeat;
                     result[count].duration = notesOff[j]["timecode"]-notesOn[i]["timecode"];
                     result[count].time = ((result[count].receivedTime)/timeDuration)+1;
+                    result[count].string = notesOff[j]["rawData"]["channel"];
                     count++;
                     break;
                 }
@@ -466,9 +474,9 @@ function createStats(arr, note){
  */
 function countNoteOnFret(note, string){
     var count = 0;
-    for (var i = 0; i<notesOn.length; i++){
+    for (var i = 0; i<sessions.length; i++){
 
-        if (notesOn[i]["rawData"]["channel"]==string && notesOn[i]["rawData"]["note"]["number"] == note) {
+        if (sessions[i]["string"]==string && sessions[i]["noteNumber"] == note) {
             count++;
         }
     }

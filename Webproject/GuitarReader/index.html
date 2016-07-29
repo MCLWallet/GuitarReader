@@ -7,6 +7,7 @@
 
     <!-- Importing Stylesheets-->
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/animate.css">
     <link rel="stylesheet" href="styles/animations.css">
     <link rel="stylesheet" href="styles/metronome.css">
 
@@ -16,7 +17,7 @@
     <script type="text/javascript" src="lib/d3.min.js"></script>
     <script type="text/javascript" src="lib/d3-legend.min.js"></script>
     <script type="text/javascript" src="lib/jquery-3.0.0.min.js"></script>
-    <script type="text/javascript" src="lib/eventDrops.js"></script>
+
 </head>
 <body>
 
@@ -49,17 +50,22 @@
 <svg id="status" width="200" height="25"></svg>
 <br>
 <br>
-<div><input id="bpm" type="number" name="bpm" value="100" size="3"/> bpm</div>
 
+<div><input id="bpm" type="number" name="bpm" value="100" size="3"/> Tempo</div>
+<!--
 <div id="timeBasedVis" class="wrap">
     <div id="lineGraphElement" class="left"></div>
     <div id="streamGraphElement" class="left"></div>
-    <div id="heatmapElement" class="left"></div>
     <div id="barChartElement" class="left"></div>
 </div>
+-->
+<br>
+<br>
+<div id="scatterplot" class="wrap"></div>
 
-<div id="scatterplot">
-</div>
+<div id="heatmapElement" class="wrap"></div>
+
+
 
 <script src="src/metronome.js"></script>
 <script src="src/ChordsAggregator.js"></script>

@@ -240,7 +240,6 @@ function beep() {
     }
     else if (beatCounter==1){
         startTone(400);
-        console.log ("FirstBeat", context.currentTime);
 
         beatCounter++;
 
@@ -263,7 +262,6 @@ function beep() {
 
 
 function startMetronome(){
-    console.log("time Metronome starts", context.currentTime);
     clearInterval($t);
     bpm = document.getElementById("bpm").value;
     $newbpm = 1000/(Math.round($('input').val()/60));

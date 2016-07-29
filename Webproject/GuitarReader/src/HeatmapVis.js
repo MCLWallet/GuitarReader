@@ -59,6 +59,9 @@ function heatmapVis(){
         .attr("rx", 4)
         .attr("ry", 4)
         .attr("class", "hour bordered")
+        .attr("id", function(d){
+            return "HM-"+d.string+"-"+ d.noteNumber;
+        })
         .attr("width", gridSize)
         .attr("height", gridSize)
         .style("fill", colorLegend[0]);

@@ -30,6 +30,7 @@ function vis(){
         barChartVis();
         */
         scatterplot();
+        heatmapVis();
         visRequested = true;
 
     }
