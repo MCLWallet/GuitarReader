@@ -2,6 +2,15 @@
 // Array where all MIDI sessions are saved
 var sessions = [];
 
+// Metronome Tempo
+var bpm = document.getElementById("bpm").value;
+var beatsPerSecond = bpm/60;
+var beatDuration = 1/beatsPerSecond;
+var timeDuration = beatDuration*4;
+
+var firstBeat;
+
+
 // Array with all notes information
 var notesOn;
 var notesOff;
@@ -88,7 +97,7 @@ function recordSession(){
                 if (preludeOver){
                     notesOn[notesOnCount] = new Object(2);
                     notesOn[notesOnCount].rawData = e;
-                    notesOn[notesOnCount].timecode = context.currentTime;
+                    notesOn[notesOnCount].timecode = audioContext.currentTime;
                     notesOnCount++;
                 }
 
@@ -97,7 +106,7 @@ function recordSession(){
                 if (preludeOver){
                     notesOff[notesOffCount] = new Object(2);
                     notesOff[notesOffCount].rawData = e;
-                    notesOff[notesOffCount].timecode = context.currentTime;
+                    notesOff[notesOffCount].timecode = audioContext.currentTime;
                     notesOffCount++;
                 }
 
@@ -196,7 +205,6 @@ function saveSession(){
 
         console.log("sessions", sessions);
 
-
         sessionSaved = true;
         recording = false;
         preludeOver = false;
@@ -247,11 +255,6 @@ function prepareScatterplotData(){
     var result = [];
     var count = 0;
 
-    var beatsPerSecond = bpm/60;
-    var beatDuration = 1/beatsPerSecond;
-    var timeDuration = beatDuration*4;
-
-    console.log("timeDuration", timeDuration);
 
     for (var i = 0; i<notesOn.length; i++){
         for (var j = i; j<notesOff.length; j++){

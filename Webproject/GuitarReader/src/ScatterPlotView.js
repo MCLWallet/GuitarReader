@@ -7,13 +7,15 @@ var groundTruth = 0;
 /**
  * Inititates the Scatterplot View
  * analyzed dataset: sessions
+ *
+ * Brushing code taken from: https://github.com/mohayonao/web-audio-scheduler
  */
-function scatterplot(){
+function scatterplot() {
     var width = 1040,
         height = 300,
         margins = {
             top: 70,
-            right:50,
+            right: 50,
             bottom: 50,
             left: 100
         };
@@ -24,12 +26,12 @@ function scatterplot(){
         .attr("height", height)
         .attr("style", "border-style: solid; border-width:1px");
 
-    var x = d3.scale.linear().domain([1, maxTimeInSessions()]).range([margins.left, width-margins.right]),
-        y = d3.scale.linear().domain([1, numSessions]).range([margins.top, height-margins.bottom*2]);
+    var x = d3.scale.linear().domain([1, maxTimeInSessions()]).range([margins.left, width - margins.right]),
+        y = d3.scale.linear().domain([1, numSessions]).range([margins.top, height - margins.bottom * 2]);
 
     var xAxis = d3.svg.axis().scale(x).orient("bottom")
             .ticks(maxTimeInSessions())
-            .innerTickSize(-height+margins.top+margins.bottom)
+            .innerTickSize(-height + margins.top + margins.bottom)
             .outerTickSize(0)
             .tickPadding(10)
             .tickFormat(d3.format("d")),
@@ -37,37 +39,51 @@ function scatterplot(){
             .ticks(numSessions)
             .tickFormat(d3.format("d"));
 
+    var brush = d3.svg.brush()
+        .x(x)
+        .on("brush", brushmove)
+        .on("brushend", brushend);
+
 
     // adding axes
     svg.append("g")
         .attr("class", "axis")
-        .attr("transform", "translate(0, "+(height-margins.bottom)+")")
+        .attr("transform", "translate(0, " + (height - margins.bottom) + ")")
         .call(xAxis);
 
     svg.append("g")
         .attr("class", "axis")
-        .attr("transform", "translate("+(margins.left-margins.right)+", 0)")
+        .attr("transform", "translate(" + (margins.left - margins.right) + ", 0)")
         .call(yAxis);
 
 
     var r = d3.scale.linear()
-        .domain([0,3])
-        .range([8,12]);
+        .domain([0, 3])
+        .range([8, 12]);
 
     var tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-    svg.selectAll("circle")
+    var circles = svg.selectAll("circle")
         .data(sessions).enter()
         .append("circle")
         .attr("class", "circle")
-        .attr("cx", function(d){ return x(d.time);})
-        .attr("cy", function(d){ return y(d.session_ID);})
-        .attr("r", function(d){ return r(d.duration);})
-        .attr("title", function(d) {return "SP"+ d.string+":"+ d.noteNumber;})
-        .attr("fill", function(d){
-            if (d.note=="C") return "#1E088C";
+        .attr("clip-path", "url(#clip)")
+        .attr("cx", function (d) {
+            return x(d.time);
+        })
+        .attr("cy", function (d) {
+            return y(d.session_ID);
+        })
+        .attr("r", function (d) {
+            return r(d.duration);
+        })
+        .attr("title", function (d) {
+            return "SP" + d.string + ":" + d.noteNumber;
+        })
+        .attr("fill", function (d) {
+            if (d.note == "C") return "#1E088C";
             else if (d.note == "C#") return "#1EA08C";
             else if (d.note == "D") return "#20A844";
             else if (d.note == "D#") return "#8AA844";
@@ -81,35 +97,44 @@ function scatterplot(){
             else if (d.note == "B") return "#670086";
             else return "black";
         })
-        .on("mouseover", function(d){
+        .on("mouseover", function (d) {
             var circle = d3.select(this);
             var string = circle.attr("title").charAt(2);
-            var note = circle.attr("title").substr(4,5);
+            var note = circle.attr("title").substr(4, 5);
 
-            var rect = d3.select(("#HM-"+string+"-"+note));
+            var rect = d3.select(("#HM-" + string + "-" + note));
             rect.attr("class", "hour bordered animated shake");
 
             tooltip.transition()
                 .duration(200)
                 .style("opacity", .9);
-            tooltip.html("Note: "+d.note)
+            tooltip.html("Note: " + d.note)
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
 
         })
-        .on("mouseout", function(){
+        .on("mouseout", function () {
             var circle = d3.select(this);
             var string = circle.attr("title").charAt(2);
-            var note = circle.attr("title").substr(4,5);
+            var note = circle.attr("title").substr(4, 5);
 
-            var rect = d3.select(("#HM-"+string+"-"+note));
+            var rect = d3.select(("#HM-" + string + "-" + note));
             rect.attr("class", "hour bordered");
 
             tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
 
-        });
+        })
+        .on('mousedown', function(){
+            brush_elm = svg.select(".brush").node();
+            new_click_event = new Event('mousedown');
+            new_click_event.pageX = d3.event.pageX;
+            new_click_event.clientX = d3.event.clientX;
+            new_click_event.pageY = d3.event.pageY;
+            new_click_event.clientY = d3.event.clientY;
+            brush_elm.dispatchEvent(new_click_event);
+    });
 
     svg.append("text")
         .attr("x", 50)
@@ -121,13 +146,13 @@ function scatterplot(){
     svg.append("line")
         .attr("x1", 10)
         .attr("y1", 38)
-        .attr("x2", width+30)
+        .attr("x2", width + 30)
         .attr("y2", 38)
         .attr("style", "stroke:rgb(0,0,0);stroke-width:1");
 
     // axis descriptions
     svg.append("text")
-        .attr("x", 15-height/2)
+        .attr("x", 15 - height / 2)
         .attr("y", 10)
         .attr("transform", "rotate(-90)")
         .attr("dy", ".71em")
@@ -135,18 +160,74 @@ function scatterplot(){
         .style("font-weight", "bold")
         .text("session");
     svg.append("text")
-        .attr("x", (width/2)+15)
-        .attr("y", height-20)
+        .attr("x", (width / 2) + 15)
+        .attr("y", height - 20)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .style("font-weight", "bold")
         .text("bars");
 
-    // TODO: improve scatterplot design (grids, lines, zoom in, interaction, etc)
+    svg.append("g")
+        .attr("class", "brush")
+        .call(brush)
+        .selectAll('rect')
+        .attr('height', height);
 
+    svg.append("defs").append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", width)
+        .attr("height", height + 20);
 
+    function brushmove() {
+        var extent = brush.extent();
+        circles.classed("selected", function (d) {
+            is_brushed = extent[0] <= d.time && d.time <= extent[1];
+            return is_brushed;
+        });
+    }
 
+    function brushend() {
+        get_button = d3.select(".clear-button");
+        if (get_button.empty() === true) {
+            clear_button = svg.append('text')
+                .attr("y", 460)
+                .attr("x", 825)
+                .attr("class", "clear-button")
+                .text("Clear Brush");
+        }
+        x.domain(brush.extent());
+
+        transition_data();
+        reset_axis();
+
+        circles.classed("selected", false);
+        d3.select(".brush").call(brush.clear());
+
+        clear_button.on('click', function(){
+            x.domain([0, 50]);
+            transition_data();
+            reset_axis();
+            clear_button.remove();
+        });
+    }
+
+    function transition_data() {
+        svg.selectAll(".point")
+            .data(sessions)
+            .transition()
+            .duration(500)
+            .attr("cx", function(d) { return x(d.time); });
+    }
+
+    function reset_axis() {
+        svg.transition().duration(500)
+            .select(".x.axis")
+            .call(xAxis);
+    }
 }
+
+
 
 
 

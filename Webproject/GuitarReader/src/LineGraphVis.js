@@ -1,4 +1,6 @@
 
+
+
 var numVis = 1;                                             // amount of requested visualizations
 var visRequested = false;
 

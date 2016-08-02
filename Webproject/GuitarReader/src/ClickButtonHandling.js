@@ -2,13 +2,13 @@
 
 // Starts the live guitar session
 function record(){
-    startMetronome();
+    start();                            // starts the metronome
     recordSession();
 }
 
 // Saves the session data into the array "filteredNotes"
 function save(){
-    stopMetronome();
+    stop();                             // stops the metronome
     saveSession();
 
 }

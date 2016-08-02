@@ -1,5 +1,8 @@
 
-
+/**
+* Inspired by: http://bl.ocks.org/WillTurman/4631136
+*
+*/
 function streamGraphVis(){
     var streamGraphColors = ["#045A8D", "#2B8CBE", "#74A9CF", "#A6BDDB"/*, "#D0D1E6", "#F1EEF6"*/];
     var strokeColor = streamGraphColors[0];
