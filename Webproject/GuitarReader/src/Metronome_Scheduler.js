@@ -58,7 +58,10 @@ function ticktack(e) {
 }
 
 function start() {
-
+    bpm = document.getElementById("bpm").value;
+    beatsPerSecond = bpm/60;
+    beatDuration = 1/beatsPerSecond;
+    barDuration = beatDuration*4;
     scheduler.start(metronome);
 }
 

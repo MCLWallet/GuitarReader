@@ -6,7 +6,7 @@ var sessions = [];
 var bpm = document.getElementById("bpm").value;
 var beatsPerSecond = bpm/60;
 var beatDuration = 1/beatsPerSecond;
-var timeDuration = beatDuration*4;
+var barDuration = beatDuration*4;
 
 var firstBeat;
 
@@ -42,8 +42,9 @@ var sessionSaved = false,
     recording = false;
 
 var csvHeader = new Array("id", "channel", "note", "receivedTime", "velocity");
+var csvHeader2 = new Array("session_id", "noteNumber", "note", "string", "velocity", "receivedTime", "duration", "barValue");
 var sep = ",";                                                  // element seperator for CSV-file
-var str;
+var str, str2;
 
 var heatmapData;
 var streamGraphData;
@@ -53,8 +54,6 @@ var scatterplotData;
 
 // Number of sessions played
 var numSessions = 0;
-
-var sessionBeginning = false;
 
 /**
  *
@@ -126,6 +125,7 @@ function recordSession(){
  *
  */
 function saveSession(){
+    // Only saves the session if the system is in recording mode
     if (recording && !sessionSaved){
         var status = d3.select("#status");
         status.select("circle").remove();
@@ -174,7 +174,6 @@ function saveSession(){
                     break;
             }
 
-            //filteredNotes[i][1] = notesOn[i]["channel"];
             filteredNotes[i][2] = notesOn[i]["rawData"]["note"]["number"];                        // MIDI-note number
             filteredNotes[i][3] = ((notesOn[i]["rawData"]["receivedTime"])/1000)-firstBeat;      // Received Time (in sec)
             filteredNotes[i][4] = notesOn[i]["rawData"]["velocity"];                              // Velocity
@@ -201,6 +200,8 @@ function saveSession(){
         scatterplotData = prepareScatterplotData();
         var temp = sessions;
         sessions = temp.concat(scatterplotData);
+        var sessionsArr = sessionsObjectToArray(sessions);
+        str2 = arrayToCSVString(csvHeader2, sessionsArr, sep);
         heatmapData = prepareHeatmapData();
 
         console.log("sessions", sessions);
@@ -218,135 +219,7 @@ function saveSession(){
 
 }
 
-/**
- * Prepares the heatmap data
- * @returns {Array} heatmapData
- */
-function prepareHeatmapData(){
-    var result = new Array(132);
-    var noteIterate = 64,               // starting with high e ...
-        stringIterate = 1,              // ... on the high e-string
-        fretIterate = 0;
-    for (var j = 0; j<132; j++){
-        result[j] = new Object(4);
-        result[j].string = stringIterate;
-        result[j].fret = fretIterate;
-        result[j].amount = countNoteOnFret(noteIterate, stringIterate);
-        result[j].noteNumber = noteIterate;
-        if (fretIterate==21){
-            fretIterate = 0;
-            if (stringIterate==2) noteIterate -= 25;
-            else noteIterate -= 26;
-            stringIterate++;
-        }
-        else{
-            fretIterate++;
-            noteIterate++;
-        }
-    }
-    return result;
-}
 
-/**
- * Prepares the sessions dataset
- * @returns {Array} sessions
- */
-function prepareScatterplotData(){
-    var result = [];
-    var count = 0;
-
-
-    for (var i = 0; i<notesOn.length; i++){
-        for (var j = i; j<notesOff.length; j++){
-            if (notesOff[j]["rawData"]["channel"]==notesOn[i]["rawData"]["channel"]){
-                if (notesOff[j]["rawData"]["note"]["number"]==notesOn[i]["rawData"]["note"]["number"]){
-                    result[count] = new Object(8);
-                    result[count].session_ID = numSessions+1;
-                    result[count].noteNumber = notesOff[j]["rawData"]["note"]["number"];
-                    result[count].note = notesOff[j]["rawData"]["note"]["name"];
-                    result[count].velocity = notesOn[i]["rawData"]["velocity"];
-                    result[count].receivedTime = notesOn[i]["timecode"]-firstBeat;
-                    result[count].duration = notesOff[j]["timecode"]-notesOn[i]["timecode"];
-                    result[count].time = ((result[count].receivedTime)/timeDuration)+1;
-                    result[count].string = notesOff[j]["rawData"]["channel"];
-                    count++;
-                    break;
-                }
-            }
-        }
-    }
-
-    return result;
-
-}
-
-/**
- * Creates the array that is compatible for the streamgraph visualization
- * @param arr StreamGraph Data
- */
-function prepareStreamGraphData(arr){
-    var result = [];
-
-    var max = 0;
-    for (var i = 0; i < arr.length; i++){
-        if (arr[i]["time"] > max) max = arr[i]["time"];
-    }
-    max = Math.round(max);
-    //console.log("max", max);
-    var count = 0;
-    for (var j = 0; j < max; j++){
-        //console.log("count", count);
-        count++;
-        var pcCount = 0,
-            otherCount = 0,
-            undefinedCount = 0,
-            barreCount = 0,
-            singleCount = 0;
-        for (var k = 0; k < arr.length; k++){
-            if (arr[k]["time"]>=j && arr[k]["time"]<j+1){
-                if (arr[k]["key"]=="PC") pcCount++;
-                if (arr[k]["key"]=="other") otherCount++;
-                //if (arr[k]["key"]=="undefined") undefinedCount++;
-                if (arr[k]["key"]=="BC") barreCount++;
-                if (arr[k]["key"]=="SN") singleCount++;
-            }
-        }
-        result.push({"key":"PC", "time":j, "value":pcCount});
-        result.push({"key":"other", "time":j, "value":otherCount});
-        //result.push({"key":"undefined", "time":j, "value":undefinedCount});
-        result.push({"key":"BC", "time":j, "value":barreCount});
-        result.push({"key":"SN", "time":j, "value":singleCount});
-    }
-
-    return result;
-}
-
-/**
- *
- * @param arr
- */
-function prepareBarChartData(arr){
-    var result;
-
-    var pcCount = 0,
-        //otherCount = 0,
-        barreCount = 0,
-        singleCount = 0;
-    for (var k = 0; k < arr.length; k++){
-        if (arr[k]["key"]=="PC") pcCount++;
-        //if (arr[k]["key"]=="other") otherCount++;
-        if (arr[k]["key"]=="BC") barreCount++;
-        if (arr[k]["key"]=="SN") singleCount++;
-    }
-    result = [{"key":"PC", "value":pcCount},
-            //{"key":"other", "value":otherCount},
-            {"key":"BC", "value":barreCount},
-            {"key":"SN", "value":singleCount}
-    ];
-
-
-    return result;
-}
 
 /**
  *
@@ -380,8 +253,9 @@ function consoleOutChordStats(arr){
 function downloadSession(){
     if (sessionSaved){
         var blob = new Blob([str], {type:"text/plain;charset=utf-8"});
+        var blob2 = new Blob([str2], {type:"text/plain;charset=utf-8"});
         saveAs(blob, "guitarData.csv");
-        var blob2 = new Blob()
+        saveAs(blob2, "guitarData2.csv");
     }
     else{
         window.alert("Record a session first!");
@@ -499,12 +373,3 @@ function getIndexOfTime(arr, t){
         }
     }
 }
-
-
-/**
- *
- * TODO: Interaction between graphs/vis (Hover over, Focus, ...)
- * TODO: Comparism Vis between sessions
- *
- *
- */

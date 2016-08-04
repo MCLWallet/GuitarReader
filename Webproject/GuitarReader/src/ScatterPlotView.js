@@ -1,9 +1,4 @@
 
-// the maximum of times a session has lasted
-var maxTime = 0;
-// most successful session that gets compared on
-var groundTruth = 0;
-
 /**
  * Inititates the Scatterplot View
  * analyzed dataset: sessions
@@ -26,11 +21,11 @@ function scatterplot() {
         .attr("height", height)
         .attr("style", "border-style: solid; border-width:1px");
 
-    var x = d3.scale.linear().domain([1, maxTimeInSessions()]).range([margins.left, width - margins.right]),
+    var x = d3.scale.linear().domain([1, maxBarValueInSessions()]).range([margins.left, width - margins.right]),
         y = d3.scale.linear().domain([1, numSessions]).range([margins.top, height - margins.bottom * 2]);
 
     var xAxis = d3.svg.axis().scale(x).orient("bottom")
-            .ticks(maxTimeInSessions())
+            .ticks(maxBarValueInSessions())
             .innerTickSize(-height + margins.top + margins.bottom)
             .outerTickSize(0)
             .tickPadding(10)
@@ -39,10 +34,6 @@ function scatterplot() {
             .ticks(numSessions)
             .tickFormat(d3.format("d"));
 
-    var brush = d3.svg.brush()
-        .x(x)
-        .on("brush", brushmove)
-        .on("brushend", brushend);
 
 
     // adding axes
@@ -69,9 +60,8 @@ function scatterplot() {
         .data(sessions).enter()
         .append("circle")
         .attr("class", "circle")
-        .attr("clip-path", "url(#clip)")
         .attr("cx", function (d) {
-            return x(d.time);
+            return x(d.barValue);
         })
         .attr("cy", function (d) {
             return y(d.session_ID);
@@ -125,16 +115,7 @@ function scatterplot() {
                 .duration(500)
                 .style("opacity", 0);
 
-        })
-        .on('mousedown', function(){
-            brush_elm = svg.select(".brush").node();
-            new_click_event = new Event('mousedown');
-            new_click_event.pageX = d3.event.pageX;
-            new_click_event.clientX = d3.event.clientX;
-            new_click_event.pageY = d3.event.pageY;
-            new_click_event.clientY = d3.event.clientY;
-            brush_elm.dispatchEvent(new_click_event);
-    });
+        });
 
     svg.append("text")
         .attr("x", 50)
@@ -167,150 +148,73 @@ function scatterplot() {
         .style("font-weight", "bold")
         .text("bars");
 
-    svg.append("g")
-        .attr("class", "brush")
-        .call(brush)
-        .selectAll('rect')
-        .attr('height', height);
 
-    svg.append("defs").append("clipPath")
-        .attr("id", "clip")
-        .append("rect")
-        .attr("width", width)
-        .attr("height", height + 20);
 
-    function brushmove() {
-        var extent = brush.extent();
-        circles.classed("selected", function (d) {
-            is_brushed = extent[0] <= d.time && d.time <= extent[1];
-            return is_brushed;
-        });
-    }
-
-    function brushend() {
-        get_button = d3.select(".clear-button");
-        if (get_button.empty() === true) {
-            clear_button = svg.append('text')
-                .attr("y", 460)
-                .attr("x", 825)
-                .attr("class", "clear-button")
-                .text("Clear Brush");
-        }
-        x.domain(brush.extent());
-
-        transition_data();
-        reset_axis();
-
-        circles.classed("selected", false);
-        d3.select(".brush").call(brush.clear());
-
-        clear_button.on('click', function(){
-            x.domain([0, 50]);
-            transition_data();
-            reset_axis();
-            clear_button.remove();
-        });
-    }
-
-    function transition_data() {
-        svg.selectAll(".point")
-            .data(sessions)
-            .transition()
-            .duration(500)
-            .attr("cx", function(d) { return x(d.time); });
-    }
-
-    function reset_axis() {
-        svg.transition().duration(500)
-            .select(".x.axis")
-            .call(xAxis);
-    }
 }
 
 
 
-
-
-
 /**
- * Returns the duration of the longest session
- * @returns {number} duration of the longest session
+ * Prepares the sessions dataset
+ * @returns {Array} sessions
  */
-function longestSession(){
-    var result = 0;
-    for (var i = 0; i < sessions.length; i++){
-        if (result<sessions[i].receivedTime) result = sessions[i].receivedTime;
-    }
-    return result;
-}
-
-/**
- * Returns the maximum time a session had
- * @returns {number} max Time
- */
-function maxTimeInSessions(){
-    var result = 0;
-    for (var i = 0; i < sessions.length; i++){
-        if (result<sessions[i].time) result = sessions[i].time;
-    }
-    return result;
-}
-
-
-/**
- * Prepares the Scatterplot data consisting of time nr (x-axis), session id (y-axis) and amount of notes
- * @returns {Array} Scatterplot Array
- */
-/*
 function prepareScatterplotData(){
     var result = [];
     var count = 0;
+    for (var i = 0; i<notesOn.length; i++){
+        for (var j = i; j<notesOff.length; j++){
+            if (notesOff[j]["rawData"]["channel"]==notesOn[i]["rawData"]["channel"]){
+                if (notesOff[j]["rawData"]["note"]["number"]==notesOn[i]["rawData"]["note"]["number"]){
+                    result[count] = new Object(8);
+                    result[count].session_ID = numSessions+1;
+                    result[count].noteNumber = notesOff[j]["rawData"]["note"]["number"];
+                    result[count].note = notesOff[j]["rawData"]["note"]["name"];
+                    result[count].velocity = notesOn[i]["rawData"]["velocity"];
+                    result[count].receivedTime = notesOn[i]["timecode"]-firstBeat;
+                    result[count].duration = notesOff[j]["timecode"]-notesOn[i]["timecode"];
+                    result[count].barValue = ((result[count].receivedTime)/barDuration)+1;
+                    result[count].string = notesOff[j]["rawData"]["channel"];
+                    count++;
+                    break;
+                }
+            }
+        }
+    }
+
+    return result;
+
+}
+
+/**
+ * Returns the maximum barValue a session had
+ * @returns {number} max barValue
+ */
+function maxBarValueInSessions(){
+    var result = 0;
     for (var i = 0; i < sessions.length; i++){
-        var timeCounter = 1;
-        var noteCounter = 0;
-        for (var j = 0; j < sessions[i].length; j++){
-            if (sessions[i][j].time==timeCounter){
-                noteCounter++;
-            }
-            else if (sessions[i][j].time==timeCounter+1){
-                result[count] = new Object(4);
-                result[count].session_ID = i+1;
-                result[count].time = timeCounter;
-                result[count].amount = noteCounter;
-                result[count].quality = 0;
-                noteCounter = 1;
-                timeCounter++;
-                count++;
-            }
-            if (j==sessions[i].length-1){
-                result[count] = new Object(4);
-                result[count].session_ID = i+1;
-                result[count].time = timeCounter;
-                result[count].amount = noteCounter;
-                result[count].quality = 0;
-                count++;
-                if (maxTime<timeCounter) maxTime = timeCounter;
-            }
-
-        }
+        if (result<sessions[i].barValue) result = sessions[i].barValue;
     }
-    // Check if there are sessions that were shorter than the longest session and append their datasets
-    for (var k = 0; k < sessions.length; k++){
-        var lastTime = sessions[k][sessions[k].length-1].time;
-        if (maxTime>lastTime){
-            while (lastTime<=maxTime){
-                lastTime++;
-                result[count] = new Object(3);
-                result[count].session_ID = k+1;
-                result[count].time = lastTime;
-                result[count].amount = 0;
-                result[count].quality = 1;
-                count++;
-            }
-        }
-
-    }
-    //compareSessions();
     return result;
 }
-*/
+
+/**
+ * Converts the array session object to an array for the csv download
+ * @param arr sessions
+ * @returns {Array} sessionsArr
+ */
+function sessionsObjectToArray(arr){
+    var result = new Array(arr.length);
+    for (var i = 0; i < arr.length; i++){
+        result[i] = new Array(8);
+        result[i][0] = arr[i].session_ID;
+        result[i][1] = arr[i].noteNumber;
+        result[i][2] = arr[i].note;
+        result[i][3] = arr[i].string;
+        result[i][4] = arr[i].velocity;
+        result[i][5] = arr[i].receivedTime;
+        result[i][6] = arr[i].duration;
+        result[i][7] = arr[i].barValue;
+    }
+    return result;
+}
+

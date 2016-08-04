@@ -126,3 +126,32 @@ function heatmapVis(){
         .text("frets");
 
 }
+
+/**
+ * Prepares the heatmap data
+ * @returns {Array} heatmapData
+ */
+function prepareHeatmapData(){
+    var result = new Array(132);
+    var noteIterate = 64,               // starting with high e ...
+        stringIterate = 1,              // ... on the high e-string
+        fretIterate = 0;
+    for (var j = 0; j<132; j++){
+        result[j] = new Object(4);
+        result[j].string = stringIterate;
+        result[j].fret = fretIterate;
+        result[j].amount = countNoteOnFret(noteIterate, stringIterate);
+        result[j].noteNumber = noteIterate;
+        if (fretIterate==21){
+            fretIterate = 0;
+            if (stringIterate==2) noteIterate -= 25;
+            else noteIterate -= 26;
+            stringIterate++;
+        }
+        else{
+            fretIterate++;
+            noteIterate++;
+        }
+    }
+    return result;
+}

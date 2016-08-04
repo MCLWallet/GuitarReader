@@ -171,6 +171,49 @@ function streamGraphVis(){
 
 }
 
+
+/**
+ * Creates the array that is compatible for the streamgraph visualization
+ * @param arr StreamGraph Data
+ */
+function prepareStreamGraphData(arr){
+    var result = [];
+
+    var max = 0;
+    for (var i = 0; i < arr.length; i++){
+        if (arr[i]["time"] > max) max = arr[i]["time"];
+    }
+    max = Math.round(max);
+    //console.log("max", max);
+    var count = 0;
+    for (var j = 0; j < max; j++){
+        //console.log("count", count);
+        count++;
+        var pcCount = 0,
+            otherCount = 0,
+            undefinedCount = 0,
+            barreCount = 0,
+            singleCount = 0;
+        for (var k = 0; k < arr.length; k++){
+            if (arr[k]["time"]>=j && arr[k]["time"]<j+1){
+                if (arr[k]["key"]=="PC") pcCount++;
+                if (arr[k]["key"]=="other") otherCount++;
+                //if (arr[k]["key"]=="undefined") undefinedCount++;
+                if (arr[k]["key"]=="BC") barreCount++;
+                if (arr[k]["key"]=="SN") singleCount++;
+            }
+        }
+        result.push({"key":"PC", "time":j, "value":pcCount});
+        result.push({"key":"other", "time":j, "value":otherCount});
+        //result.push({"key":"undefined", "time":j, "value":undefinedCount});
+        result.push({"key":"BC", "time":j, "value":barreCount});
+        result.push({"key":"SN", "time":j, "value":singleCount});
+    }
+
+    return result;
+}
+
+
 /**
  *
  * @param id
@@ -179,9 +222,9 @@ function onMouseEnterBar(id){
     //console.log("id", id);
     document.getElementById(id.id).fill = "black";
     /*
-    var svg = d3.select("#streamGraphElement");
-    svg.select("#"+id).transition()
-        .duration(250)
-        .attr("opacity", 0.6);
-        */
+     var svg = d3.select("#streamGraphElement");
+     svg.select("#"+id).transition()
+     .duration(250)
+     .attr("opacity", 0.6);
+     */
 }

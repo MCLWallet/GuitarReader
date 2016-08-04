@@ -81,3 +81,32 @@ function barChartVis(){
     }
 }
 
+
+
+/**
+ *
+ * @param arr
+ */
+function prepareBarChartData(arr){
+    var result;
+
+    var pcCount = 0,
+        //otherCount = 0,
+        barreCount = 0,
+        singleCount = 0;
+    for (var k = 0; k < arr.length; k++){
+        if (arr[k]["key"]=="PC") pcCount++;
+        //if (arr[k]["key"]=="other") otherCount++;
+        if (arr[k]["key"]=="BC") barreCount++;
+        if (arr[k]["key"]=="SN") singleCount++;
+    }
+    result = [{"key":"PC", "value":pcCount},
+        //{"key":"other", "value":otherCount},
+        {"key":"BC", "value":barreCount},
+        {"key":"SN", "value":singleCount}
+    ];
+
+
+    return result;
+}
+
